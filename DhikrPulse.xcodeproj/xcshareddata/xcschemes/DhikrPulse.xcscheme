@@ -51,7 +51,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../DhikrPulse/DhikrPulseSubscriptions.storekit">
+         identifier = "../../DhikrPulse/App/DhikrPulseSubscriptions.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction

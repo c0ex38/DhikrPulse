@@ -60,6 +60,42 @@ struct AboutLinksSectionView: View {
                     .padding(.leading, 60)
                 
                 Button {
+                    if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+                        UIApplication.shared.open(url)
+                    }
+                } label: {
+                    SettingsRowView(
+                        icon: "creditcard.fill",
+                        iconColor: .orange,
+                        title: "Abonelikleri Yönet",
+                        subtitle: "Mevcut abonelik planlarınızı düzenleyin",
+                        trailing: .externalLink
+                    )
+                }
+                
+                Divider()
+                    .background(Color.themeSecondaryText.opacity(0.2))
+                    .padding(.leading, 60)
+                
+                Button {
+                    if let url = URL(string: "mailto:destek@dhikrpulse.com") {
+                        UIApplication.shared.open(url)
+                    }
+                } label: {
+                    SettingsRowView(
+                        icon: "envelope.fill",
+                        iconColor: .teal,
+                        title: "Bize Ulaşın",
+                        subtitle: "Destek alın veya hata bildirin",
+                        trailing: .externalLink
+                    )
+                }
+                
+                Divider()
+                    .background(Color.themeSecondaryText.opacity(0.2))
+                    .padding(.leading, 60)
+                
+                Button {
                     if let url = URL(string: "https://dhikrpulse.app/privacy") { // TODO: Replace URL
                         UIApplication.shared.open(url)
                     }
@@ -69,6 +105,25 @@ struct AboutLinksSectionView: View {
                         iconColor: .purple,
                         title: "Gizlilik Politikası",
                         subtitle: "Verilerinizi nasıl kullandığımız",
+                        trailing: .externalLink
+                    )
+                }
+                
+                Divider()
+                    .background(Color.themeSecondaryText.opacity(0.2))
+                    .padding(.leading, 60)
+                
+                Button {
+                    // Standart Apple EULA veya kendi koşullarınız
+                    if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                        UIApplication.shared.open(url)
+                    }
+                } label: {
+                    SettingsRowView(
+                        icon: "doc.text.fill",
+                        iconColor: .gray,
+                        title: "Kullanım Koşulları (EULA)",
+                        subtitle: "Yasal kullanım hakları",
                         trailing: .externalLink
                     )
                 }

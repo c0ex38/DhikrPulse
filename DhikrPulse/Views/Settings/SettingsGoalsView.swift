@@ -7,6 +7,7 @@ struct SettingsGoalsView: View {
     @State private var showingPremiumStore = false
     @State private var showingNameEditAlert = false
     @State private var showingCustomizationHub = false
+    @State private var showingDeleteAccountAlert = false
     @State private var editedName = ""
     
     var body: some View {
@@ -38,6 +39,22 @@ struct SettingsGoalsView: View {
                         // About & Links
                         AboutLinksSectionView()
                         
+                        // Delete Account (Apple Mandatory)
+                        VStack {
+                            Button(role: .destructive) {
+                                showingDeleteAccountAlert = true
+                            } label: {
+                                Text("Hesabı ve Tüm Verileri Sil")
+                                    .font(.headline)
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.red.opacity(0.1))
+                                    .cornerRadius(12)
+                            }
+                        }
+                        .padding(.horizontal)
+                        
                         // Footer
                         footerSection
                     }
@@ -60,6 +77,14 @@ struct SettingsGoalsView: View {
                 }
             } message: {
                 Text("Profilinizde görünecek yeni bir ad belirleyin.")
+            }
+            .alert("Hesabınızı Silmek İstediğinize Emin Misiniz?", isPresented: $showingDeleteAccountAlert) {
+                Button("İptal", role: .cancel) { }
+                Button("Evet, Tüm Verileri Sil", role: .destructive) {
+                    viewModel.deleteAccount()
+                }
+            } message: {
+                Text("Bu işlem geri alınamaz. Kütüphanedeki zikirleriniz, oluşturduğunuz hedefler, Premium satın alım kaydınız ve Liderlik Tablosundaki skorunuz kalıcı olarak sıfırlanacaktır.")
             }
             .navigationTitle("Ayarlar")
             .navigationBarTitleDisplayMode(.inline)

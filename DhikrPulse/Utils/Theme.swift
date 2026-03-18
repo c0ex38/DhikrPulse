@@ -1,78 +1,86 @@
 import SwiftUI
 
-// MARK: - Color Theme Definitions
-extension Color {
-    // Colors extracted from the Stitch design screenshots
+class ThemeCache {
+    static let shared = ThemeCache()
     
-    // The main background: deep dark green/black in dark mode, off-white/very light gray in light mode
-    static var themeBackground: Color {
-        if let hexString = UserDefaults.standard.string(forKey: "custom_background_hex"),
-           let customColor = Color(hex: hexString) {
-            return customColor
+    var themeBackground: Color!
+    var themeCard: Color!
+    var themeSecondaryText: Color!
+    var themePrimaryText: Color!
+    var themeAccent: Color!
+    
+    private init() {
+        reload()
+        NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { _ in
+            self.reload()
         }
-        return Color(UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark
-                ? UIColor(red: 0.04, green: 0.09, blue: 0.07, alpha: 1.0)
-                : UIColor(red: 0.96, green: 0.97, blue: 0.96, alpha: 1.0) // F5F7F5
-        })
     }
     
-    // The surface/card backgrounds: slightly lighter dark green in dark mode, pure white in light mode
-    static var themeCard: Color {
-        if let hexString = UserDefaults.standard.string(forKey: "custom_card_hex"),
-           let customColor = Color(hex: hexString) {
-            return customColor
+    func reload() {
+        if let hex = UserDefaults.standard.string(forKey: "custom_background_hex"), let c = Color(hex: hex) {
+            themeBackground = c
+        } else {
+            themeBackground = Color(UIColor { traitCollection in
+                return traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.04, green: 0.09, blue: 0.07, alpha: 1.0)
+                    : UIColor(red: 0.96, green: 0.97, blue: 0.96, alpha: 1.0)
+            })
         }
-        return Color(UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark
-                ? UIColor(red: 0.08, green: 0.15, blue: 0.11, alpha: 1.0)
-                : UIColor.white
-        })
-    }
-    
-    // Secondary accent/text colors: green-gray in dark mode, deeper gray in light mode
-    static var themeSecondaryText: Color {
-        if let hexString = UserDefaults.standard.string(forKey: "custom_text_hex"),
-           let customColor = Color(hex: hexString) {
-            return customColor
+        
+        if let hex = UserDefaults.standard.string(forKey: "custom_card_hex"), let c = Color(hex: hex) {
+            themeCard = c
+        } else {
+            themeCard = Color(UIColor { traitCollection in
+                return traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.08, green: 0.15, blue: 0.11, alpha: 1.0)
+                    : UIColor.white
+            })
         }
-        return Color(UIColor { traitCollection in
-            return traitCollection.userInterfaceStyle == .dark
-                ? UIColor(red: 0.5, green: 0.6, blue: 0.55, alpha: 1.0)
-                : UIColor(red: 0.4, green: 0.45, blue: 0.42, alpha: 1.0)
-        })
-    }
-    
-    // Primary text/icon color: pure white in dark mode, near black in light mode
-    static var themePrimaryText: Color {
-        return Color(UIColor { traitCollection in
+        
+        if let hex = UserDefaults.standard.string(forKey: "custom_text_hex"), let c = Color(hex: hex) {
+            themeSecondaryText = c
+        } else {
+            themeSecondaryText = Color(UIColor { traitCollection in
+                return traitCollection.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.5, green: 0.6, blue: 0.55, alpha: 1.0)
+                    : UIColor(red: 0.4, green: 0.45, blue: 0.42, alpha: 1.0)
+            })
+        }
+        
+        themePrimaryText = Color(UIColor { traitCollection in
             return traitCollection.userInterfaceStyle == .dark
                 ? UIColor.white
                 : UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1.0)
         })
-    }
-    
-    /// Dynamic Accent Color based on user's premium selection
-    static var themeAccent: Color {
+        
         let isPremium = UserDefaults.standard.bool(forKey: "is_premium")
         let savedTheme = isPremium ? (UserDefaults.standard.string(forKey: "premium_theme_color") ?? "emerald") : "emerald"
         
         switch savedTheme {
-        case "sapphire": return Color(red: 0.12, green: 0.53, blue: 0.90) // Mavi
-        case "ruby":     return Color(red: 0.86, green: 0.15, blue: 0.27) // Kırmızı
-        case "gold":     return Color(red: 0.85, green: 0.65, blue: 0.13) // Altın
-        case "amethyst": return Color(red: 0.61, green: 0.35, blue: 0.71) // Mor
+        case "sapphire": themeAccent = Color(red: 0.12, green: 0.53, blue: 0.90)
+        case "ruby":     themeAccent = Color(red: 0.86, green: 0.15, blue: 0.27)
+        case "gold":     themeAccent = Color(red: 0.85, green: 0.65, blue: 0.13)
+        case "amethyst": themeAccent = Color(red: 0.61, green: 0.35, blue: 0.71)
         case "custom":
-            // Eğer özel renk seçilmişse HEX kodundan oku
             if let hexString = UserDefaults.standard.string(forKey: "premium_custom_color_hex"),
                let customColor = Color(hex: hexString) {
-                return customColor
+                themeAccent = customColor
+            } else {
+                themeAccent = Color(red: 0.12, green: 0.84, blue: 0.45)
             }
-            return Color(red: 0.12, green: 0.84, blue: 0.45) // Zümrüt (VarsayılanFallback)
         case "emerald":  fallthrough
-        default:         return Color(red: 0.12, green: 0.84, blue: 0.45) // Zümrüt (Varsayılan)
+        default:         themeAccent = Color(red: 0.12, green: 0.84, blue: 0.45)
         }
     }
+}
+
+// MARK: - Color Theme Definitions
+extension Color {
+    static var themeBackground: Color { ThemeCache.shared.themeBackground }
+    static var themeCard: Color { ThemeCache.shared.themeCard }
+    static var themeSecondaryText: Color { ThemeCache.shared.themeSecondaryText }
+    static var themePrimaryText: Color { ThemeCache.shared.themePrimaryText }
+    static var themeAccent: Color { ThemeCache.shared.themeAccent }
 }
 
 // MARK: - Color Hex Conversion

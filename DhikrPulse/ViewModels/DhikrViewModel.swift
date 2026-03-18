@@ -42,11 +42,36 @@ class DhikrViewModel: ObservableObject {
     private var db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
     
+    private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
+    private var firestoreListenerCancellables = [ListenerRegistration]()
+    
     init() {
-        signInAnonymously()
+        setupAuthListener()
     }
     
     // MARK: - Auth
+    private func setupAuthListener() {
+        authStateListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
+            guard let self = self else { return }
+            
+            if let user = user {
+                print("Signed in as UID: \(user.uid)")
+                
+                // Eğer farklı bir kullanıcıysa veya dinleyiciler boşsa dinleyicileri başlat
+                if self.currentUserId != user.uid || self.firestoreListenerCancellables.isEmpty {
+                    self.currentUserId = user.uid
+                    self.setupListeners()
+                }
+            } else {
+                print("User signed out or invalid token. Signing in anonymously again...")
+                // Mevcut dinleyicileri temizle
+                self.clearListeners()
+                self.currentUserId = nil
+                self.signInAnonymously()
+            }
+        }
+    }
+    
     private func signInAnonymously() {
         Auth.auth().signInAnonymously { [weak self] authResult, error in
             guard let self = self else { return }
@@ -56,14 +81,15 @@ class DhikrViewModel: ObservableObject {
                     self.showError = true
                 }
                 print("Error signing in anonymously: \(error.localizedDescription)")
-                return
-            }
-            if let user = authResult?.user {
-                print("Signed in as UID: \(user.uid)")
-                self.currentUserId = user.uid
-                self.setupListeners() // Dinleyicileri kullanıcı belli olduktan sonra başlat
             }
         }
+    }
+    
+    private func clearListeners() {
+        for listener in firestoreListenerCancellables {
+            listener.remove()
+        }
+        firestoreListenerCancellables.removeAll()
     }
     
     // MARK: - Helper: User Collection Reference
@@ -74,10 +100,11 @@ class DhikrViewModel: ObservableObject {
     
     // MARK: - Firestore Listeners
     private func setupListeners() {
+        clearListeners() // Öncekileri temizle garantilemek için
         guard let userRef = userDocRef() else { return }
         
         // Listen to User Profile
-        userRef.addSnapshotListener { documentSnapshot, error in
+        let profileListener = userRef.addSnapshotListener { documentSnapshot, error in
             if let error = error {
                 print("Error fetching user profile: \(error.localizedDescription)")
                 return
@@ -101,9 +128,10 @@ class DhikrViewModel: ObservableObject {
             
             self.userProfile = profile
         }
+        firestoreListenerCancellables.append(profileListener)
         
         // Listen to Dhikrs
-        userRef.collection("dhikrs")
+        let dhikrsListener = userRef.collection("dhikrs")
             .order(by: "lastUpdated", descending: true)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
@@ -121,9 +149,10 @@ class DhikrViewModel: ObservableObject {
                     try? doc.data(as: DhikrItem.self)
                 }
             }
+        firestoreListenerCancellables.append(dhikrsListener)
         
         // Listen to Daily Logs
-        userRef.collection("dailyLogs")
+        let logsListener = userRef.collection("dailyLogs")
             .order(by: "dateString", descending: true)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
@@ -144,9 +173,10 @@ class DhikrViewModel: ObservableObject {
                 // Arkaplandan gelen tıklamaları işle
                 self.processWidgetClicks()
             }
+        firestoreListenerCancellables.append(logsListener)
             
         // Listen to Categories
-        userRef.collection("categories")
+        let categoriesListener = userRef.collection("categories")
             .order(by: "createdAt", descending: false)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
@@ -156,6 +186,7 @@ class DhikrViewModel: ObservableObject {
                 guard let documents = querySnapshot?.documents else { return }
                 self.categories = documents.compactMap { try? $0.data(as: DhikrCategory.self) }
             }
+        firestoreListenerCancellables.append(categoriesListener)
     }
     
     // MARK: - CRUD Operations (Categories)
@@ -246,27 +277,18 @@ class DhikrViewModel: ObservableObject {
         
         let logRef = userRef.collection("dailyLogs").document(todayString)
         
-        logRef.getDocument { document, error in
-            Task { @MainActor in
-                if let doc = document, doc.exists {
-                    // Günlük kayıt varsa güncelle
-                    if let existingLog = try? doc.data(as: DailyLog.self) {
-                        var updatedLog = existingLog
-                        updatedLog.totalZikirs += count
-                        // Eğer totalZikirs 0'ın altına düşerse 0'da tut (örn: geri al butonuna basıldıysa)
-                        if updatedLog.totalZikirs < 0 {
-                            updatedLog.totalZikirs = 0
-                        }
-                        try? logRef.setData(from: updatedLog)
-                    }
-                } else {
-                    // Bugün için kayıt yoksa yeni yarat
-                    let newCount = max(0, count) // Yeni kayıtta eksi değer olma ihtimalini koru
-                    let newLog = DailyLog(dateString: todayString, totalZikirs: newCount)
-                    try? logRef.setData(from: newLog)
-                }
-                
-                self.updateStreak(todayString: todayString)
+        // FieldValue.increment kullanarak race condition olmadan atomik artırım yapıyoruz
+        logRef.setData([
+            "dateString": todayString,
+            "totalZikirs": FieldValue.increment(Int64(count))
+        ], merge: true)
+        
+        Task { @MainActor in
+            self.updateStreak(todayString: todayString)
+            
+            // Eğer zikir yapıldıysa ve hatırlatıcılar açıksa, bugünün hatırlatıcısını iptal edip yarından başlat
+            if count > 0 && UserDefaults.standard.bool(forKey: "daily_reminder_enabled") {
+                NotificationManager.shared.rescheduleAllRemindersForTomorrow()
             }
         }
     }
@@ -331,6 +353,32 @@ class DhikrViewModel: ObservableObject {
         
         profile.displayName = finalName
         try? userRef.setData(from: profile, merge: true)
+    }
+    
+    // MARK: - Account Deletion
+    func deleteAccount() {
+        guard let user = Auth.auth().currentUser else { return }
+        let uid = user.uid
+        
+        Task {
+            do {
+                // 1. Delete user from Firestore Leaderboard/Profile DB
+                try await db.collection("users").document(uid).delete()
+                
+                // 2. Delete Auth context
+                // Notice: Since our app uses Anonymous Auth, deleting the user 
+                // will trigger the Auth listener which automatically logs the user back in 
+                // as a brand new anonymous user. This effectively acts as a full reset.
+                try await user.delete()
+                
+            } catch {
+                await MainActor.run {
+                    self.errorMessage = "Hesap silinirken bir hata oluştu: \(error.localizedDescription)"
+                    self.showError = true
+                }
+                print("Failed to delete account: \(error)")
+            }
+        }
     }
     
     // MARK: - WidgetKit Integration

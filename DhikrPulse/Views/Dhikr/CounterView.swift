@@ -4,6 +4,7 @@ import AudioToolbox
 struct CounterView: View {
     // Current dhikr item passed conceptually, but we read real data from VM
     var dhikrItemId: String?
+    var selectedTab: Binding<Int>?
     
     // Uygulama geneli seçili zikrin ID'sini değiştirebilmek için
     @AppStorage("active_dhikr_id") private var activeDhikrIdAsString: String = ""
@@ -91,7 +92,7 @@ struct CounterView: View {
                     
                     // Right Settings Button
                     CircleIconButton(icon: "gearshape.fill") {
-                        /* Open Settings */
+                        selectedTab?.wrappedValue = 5
                     }
                 }
                 .padding(.horizontal)

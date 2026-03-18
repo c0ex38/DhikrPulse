@@ -51,14 +51,15 @@ class NotificationManager: ObservableObject {
     ]
     
     /// Belirli bir saat için 7 günlük rotasyonlu bildirim planlar
-    func scheduleRotatingReminders(hour: Int, minute: Int, reminderId: String) {
+    func scheduleRotatingReminders(hour: Int, minute: Int, reminderId: String, startFromTomorrow: Bool = false) {
         // Bu saat için önceki bildirimleri temizle
         cancelRemindersForId(reminderId)
         
         let calendar = Calendar.current
         let today = Date()
+        let startOffset = startFromTomorrow ? 1 : 0
         
-        for dayOffset in 0..<7 {
+        for dayOffset in startOffset..<(startOffset + 7) {
             guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
             
             let content = UNMutableNotificationContent()
@@ -132,6 +133,25 @@ class NotificationManager: ObservableObject {
             DispatchQueue.main.async {
                 UIApplication.shared.applicationIconBadgeNumber = 0
             }
+        }
+    }
+    
+    // MARK: - Akıllı Hatırlatıcı (Smart Reminder)
+    
+    func rescheduleAllRemindersForTomorrow() {
+        guard let data = UserDefaults.standard.string(forKey: "reminder_times_json")?.data(using: .utf8),
+              let times = try? JSONDecoder().decode([ReminderTime].self, from: data) else {
+            return
+        }
+        
+        cancelAllReminders()
+        for time in times {
+            scheduleRotatingReminders(
+                hour: time.hour,
+                minute: time.minute,
+                reminderId: "reminder_\(time.hour)_\(time.minute)",
+                startFromTomorrow: true
+            )
         }
     }
     

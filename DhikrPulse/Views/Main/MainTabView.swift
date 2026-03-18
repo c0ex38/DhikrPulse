@@ -19,7 +19,7 @@ struct MainTabView: View {
             // Tab 1: Counter
             Group {
                 if let dhikr = activeDhikr {
-                    CounterView(dhikrItemId: dhikr.id)
+                    CounterView(dhikrItemId: dhikr.id, selectedTab: $selectedTab)
                 } else {
                     // Fallback empty view when no items exist
                     VStack {
@@ -51,29 +51,37 @@ struct MainTabView: View {
                 }
             .tag(1)
             
-            // Tab 3: Dhikr List
+            // Tab 3: Esma Library
+            EsmaLibraryView()
+                .tabItem {
+                    Image(systemName: "book.pages.fill")
+                    Text("Keşfet")
+                }
+            .tag(2)
+            
+            // Tab 4: Dhikr List
             DhikrListView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "list.dash")
                     Text("Kütüphane")
                 }
-            .tag(2)
+            .tag(3)
             
-            // Tab 4: Stats
+            // Tab 5: Stats
             InsightsStatsView()
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
                     Text("İstatistikler")
                 }
-            .tag(3)
+            .tag(4)
             
-            // Tab 5: Settings
+            // Tab 6: Settings
             SettingsGoalsView()
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Ayarlar")
                 }
-            .tag(4)
+            .tag(5)
         }
         .accentColor(.themeAccent) // Use global custom accent color
         .onAppear {

@@ -10,6 +10,10 @@ class DhikrViewModel: ObservableObject {
     @Published var userProfile: UserProfile?
     @Published var currentUserId: String?
     
+    // Error Handling
+    @Published var errorMessage: String?
+    @Published var showError: Bool = false
+    
     // Toplam yaşam boyu zikir sayısı
     var totalLifetimeZikirs: Int {
         dailyLogs.reduce(0) { $0 + $1.totalZikirs }
@@ -43,6 +47,10 @@ class DhikrViewModel: ObservableObject {
         Auth.auth().signInAnonymously { [weak self] authResult, error in
             guard let self = self else { return }
             if let error = error {
+                Task { @MainActor in
+                    self.errorMessage = "Giriş yapılamadı: \(error.localizedDescription)"
+                    self.showError = true
+                }
                 print("Error signing in anonymously: \(error.localizedDescription)")
                 return
             }
@@ -95,6 +103,10 @@ class DhikrViewModel: ObservableObject {
             .order(by: "lastUpdated", descending: true)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
+                    Task { @MainActor in
+                        self.errorMessage = "Zikirler yüklenirken hata oluştu: \(error.localizedDescription)"
+                        self.showError = true
+                    }
                     print("Error getting dhikrs: \(error.localizedDescription)")
                     return
                 }
@@ -111,6 +123,10 @@ class DhikrViewModel: ObservableObject {
             .order(by: "dateString", descending: true)
             .addSnapshotListener { querySnapshot, error in
                 if let error = error {
+                    Task { @MainActor in
+                        self.errorMessage = "Günlük istatistikler yüklenirken hata oluştu: \(error.localizedDescription)"
+                        self.showError = true
+                    }
                     print("Error getting dailyLogs: \(error.localizedDescription)")
                     return
                 }
@@ -137,6 +153,10 @@ class DhikrViewModel: ObservableObject {
         do {
             try userRef.collection("dhikrs").addDocument(from: newDhikr)
         } catch {
+            Task { @MainActor in
+                self.errorMessage = "Zikir eklenemedi. Lütfen internet bağlantınızı kontrol edin."
+                self.showError = true
+            }
             print("Error adding dhikr: \(error.localizedDescription)")
         }
     }
@@ -148,13 +168,24 @@ class DhikrViewModel: ObservableObject {
         do {
             try userRef.collection("dhikrs").document(id).setData(from: updatedDhikr)
         } catch {
+            Task { @MainActor in
+                self.errorMessage = "Zikir güncellenemedi. Değişiklikler kaydedilmemiş olabilir."
+                self.showError = true
+            }
             print("Error updating dhikr: \(error.localizedDescription)")
         }
     }
     
     func deleteDhikr(_ dhikr: DhikrItem) {
         guard let userRef = userDocRef(), let id = dhikr.id else { return }
-        userRef.collection("dhikrs").document(id).delete()
+        userRef.collection("dhikrs").document(id).delete { error in
+            if let error = error {
+                Task { @MainActor in
+                    self.errorMessage = "Zikir silinemedi: \(error.localizedDescription)"
+                    self.showError = true
+                }
+            }
+        }
     }
     
     // MARK: - Daily Logging (Zikir Count Activity)
@@ -229,8 +260,12 @@ class DhikrViewModel: ObservableObject {
         
         // Sadece isPro alanını, varsa diğer verileri ezmeden güncelle (merge: true eşdeğeri olarak updateData).
         // Eğer döküman hiç yoksa diye setData ile merge kullanıyoruz.
-        userRef.setData(["isPro": isPro], merge: true) { error in
+        userRef.setData(["isPro": isPro], merge: true) { [weak self] error in
             if let error = error {
+                Task { @MainActor in
+                    self?.errorMessage = "Premium statüsü güncellenirken bir hata oluştu: \(error.localizedDescription)"
+                    self?.showError = true
+                }
                 print("Error updating user Pro status in Firestore: \(error.localizedDescription)")
             } else {
                 print("Firebase: User Pro status successfully updated to \(isPro)")

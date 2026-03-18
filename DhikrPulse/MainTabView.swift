@@ -75,6 +75,13 @@ struct MainTabView: View {
                 createDefaultDhikrs()
             }
         }
+        .alert("Hata", isPresented: $viewModel.showError) {
+            Button("Tamam", role: .cancel) {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            Text(viewModel.errorMessage ?? "Bilinmeyen bir hata oluştu.")
+        }
     }
     
     // MARK: - Helper Methods

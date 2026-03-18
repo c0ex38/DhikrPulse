@@ -22,14 +22,14 @@ struct PremiumUpgradeBannerView: View {
                                 )
                                 .frame(width: 44, height: 44)
                             Image(systemName: "crown.fill")
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                                 .font(.title3)
                         }
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("DhikrPulse PRO'ya Geçin")
                                 .font(.headline)
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                             Text("Sınırsız zikir, temalar, ısı haritası ve daha fazlası")
                                 .font(.caption)
                                 .foregroundColor(.themeSecondaryText)

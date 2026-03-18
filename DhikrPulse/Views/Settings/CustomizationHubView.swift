@@ -227,7 +227,7 @@ struct CustomizationHubView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Görünüm Modu")
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
                 .padding(.horizontal)
             
             Picker("Görünüm Modu", selection: $schemeType) {
@@ -238,7 +238,7 @@ struct CustomizationHubView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
             
-            Divider().background(Color.white.opacity(0.1)).padding(.vertical, 8)
+            Divider().background(Color.themePrimaryText.opacity(0.1)).padding(.vertical, 8)
             
             Text("Uygulamanın genel aksan rengini ve gelişmiş renkleri değiştirin.")
                 .font(.subheadline)
@@ -347,15 +347,15 @@ struct CustomizationHubView: View {
                 colorRow(title: "Aksan (İkonlar & Çizgiler)", selection: $tempCustomColor) { hex in
                     customColorHex = hex
                 }
-                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                Divider().background(Color.themePrimaryText.opacity(0.1)).padding(.leading, 16)
                 colorRow(title: "Arka Plan", selection: $tempCustomBackground) { hex in
                     customBackgroundHex = hex
                 }
-                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                Divider().background(Color.themePrimaryText.opacity(0.1)).padding(.leading, 16)
                 colorRow(title: "Kartlar & Kutular", selection: $tempCustomCard) { hex in
                     customCardHex = hex
                 }
-                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                Divider().background(Color.themePrimaryText.opacity(0.1)).padding(.leading, 16)
                 colorRow(title: "İkincil Metin", selection: $tempCustomText) { hex in
                     customTextHex = hex
                 }
@@ -364,7 +364,7 @@ struct CustomizationHubView: View {
             .cornerRadius(16)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+                    .stroke(Color.themePrimaryText.opacity(0.1), lineWidth: 1)
             )
         }
         .padding(.horizontal)
@@ -443,7 +443,7 @@ struct CustomizationHubView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(pad.name)
                                     .font(.headline)
-                                    .foregroundColor(isSelected ? activeColor : .white)
+                                    .foregroundColor(isSelected ? activeColor : .themePrimaryText)
                                 
                                 Text(pad.description)
                                     .font(.caption)

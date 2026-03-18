@@ -163,7 +163,6 @@ struct DhikrListView: View {
             }
             .navigationTitle("DhikrPulse")
             .navigationBarTitleDisplayMode(.inline)
-            .darkNavStyle()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {}) {

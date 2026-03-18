@@ -26,8 +26,8 @@ struct ConfettiView: UIViewRepresentable {
     private func fireConfetti(in view: UIView) {
         let emitter = CAEmitterLayer()
         // Ekranın üstünden, tam ortasından dökülecek şekilde konumlandırıyoruz.
-        // updateUIView tetiklediğinde bounds sıfır olabilirse diye genişliği tahmin edebilir veya ana ekrana yayabiliriz.
-        let width = UIScreen.main.bounds.width
+        // updateUIView tetiklediğinde bounds sıfır olabilirse diye windowScene yedeği koyuyoruz
+        let width = view.window?.windowScene?.screen.bounds.width ?? UIScreen.main.bounds.width
         emitter.emitterPosition = CGPoint(x: width / 2, y: -30)
         emitter.emitterShape = .line
         emitter.emitterSize = CGSize(width: width, height: 1)

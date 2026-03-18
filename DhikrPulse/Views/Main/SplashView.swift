@@ -38,7 +38,7 @@ struct SplashView: View {
                     
                     Text("DhikrPulse")
                         .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(.themePrimaryText)
                     
                     Text("Kalbinizi ritimde tutun")
                         .font(.caption)

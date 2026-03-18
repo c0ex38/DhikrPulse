@@ -63,7 +63,6 @@ struct SettingsGoalsView: View {
             }
             .navigationTitle("Ayarlar")
             .navigationBarTitleDisplayMode(.inline)
-            .darkNavStyle()
         }
     }
     

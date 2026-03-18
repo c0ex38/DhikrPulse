@@ -50,7 +50,6 @@ struct InsightsStatsView: View {
             }
             .navigationTitle("İstatistikler")
             .navigationBarTitleDisplayMode(.inline)
-            .darkNavStyle()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {}) {

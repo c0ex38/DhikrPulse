@@ -3,7 +3,7 @@ import SwiftUI
 struct AppPreferencesSectionView: View {
     @AppStorage("haptic_enabled") private var hapticEnabled: Bool = true
     @AppStorage("sound_enabled") private var soundEnabled: Bool = false
-    @AppStorage("is_dark_mode") private var isDarkMode: Bool = true
+    @AppStorage("app_color_scheme") private var schemeType: Int = 0
     
     @Binding var showingCustomizationHub: Bool
     
@@ -54,7 +54,7 @@ struct AppPreferencesSectionView: View {
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Görünüm")
-                            .foregroundColor(.white)
+                            .foregroundColor(.themePrimaryText)
                             .font(.body)
                         Text("Açık & Koyu mod arası geçiş")
                             .foregroundColor(.themeSecondaryText)
@@ -64,21 +64,29 @@ struct AppPreferencesSectionView: View {
                     Spacer()
                     
                     HStack(spacing: 0) {
-                        Button(action: { isDarkMode = false }) {
+                        Button(action: { schemeType = 0 }) {
+                            Text("Sistem")
+                                .font(.caption.bold())
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 8)
+                                .background(schemeType == 0 ? Color.themeAccent : Color.clear)
+                                .foregroundColor(schemeType == 0 ? Color.themeBackground : .themeSecondaryText)
+                        }
+                        Button(action: { schemeType = 1 }) {
                             Text("Açık")
                                 .font(.caption.bold())
-                                .padding(.horizontal, 12)
+                                .padding(.horizontal, 10)
                                 .padding(.vertical, 8)
-                                .background(isDarkMode ? Color.clear : Color.themeCard)
-                                .foregroundColor(isDarkMode ? .themeSecondaryText : .white)
+                                .background(schemeType == 1 ? Color.themeAccent : Color.clear)
+                                .foregroundColor(schemeType == 1 ? Color.themeBackground : .themeSecondaryText)
                         }
-                        Button(action: { isDarkMode = true }) {
+                        Button(action: { schemeType = 2 }) {
                             Text("Koyu")
                                 .font(.caption.bold())
-                                .padding(.horizontal, 12)
+                                .padding(.horizontal, 10)
                                 .padding(.vertical, 8)
-                                .background(isDarkMode ? Color.themeAccent : Color.clear)
-                                .foregroundColor(isDarkMode ? Color.themeBackground : .themeSecondaryText)
+                                .background(schemeType == 2 ? Color.themeAccent : Color.clear)
+                                .foregroundColor(schemeType == 2 ? Color.themeBackground : .themeSecondaryText)
                         }
                     }
                     .background(Color.themeBackground)

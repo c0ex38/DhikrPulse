@@ -72,7 +72,7 @@ struct CounterView: View {
                             HStack(spacing: 4) {
                                 Text(dhikrItem?.name.uppercased() ?? "ZİKİR SEÇİN")
                                     .font(.system(size: 16, weight: .bold, design: .default))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.themePrimaryText)
                                     .tracking(2)
                                 
                                 Image(systemName: "chevron.down")
@@ -103,7 +103,7 @@ struct CounterView: View {
                 VStack(spacing: 8) {
                     Text("\(dhikrItem?.currentCount ?? 0)")
                         .font(.system(size: 110, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(.themePrimaryText)
                         .contentTransition(.numericText())
                         .animation(.snappy, value: dhikrItem?.currentCount)
                     
@@ -129,7 +129,7 @@ struct CounterView: View {
                                 .overlay(
                                     Image(systemName: "leaf.fill")
                                         .font(.system(size: 60))
-                                        .foregroundColor(.white.opacity(0.7))
+                                        .foregroundColor(.themePrimaryText.opacity(0.7))
                                 )
                         } else if storeManager.isPro && touchpadStyle == "water" {
                             // Su Damlası Tema
@@ -142,7 +142,7 @@ struct CounterView: View {
                                 .overlay(
                                     Image(systemName: "drop.fill")
                                         .font(.system(size: 60))
-                                        .foregroundColor(.white.opacity(0.7))
+                                        .foregroundColor(.themePrimaryText.opacity(0.7))
                                 )
                         } else {
                             // Klasik Tema (Yeşil)

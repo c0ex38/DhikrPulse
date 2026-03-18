@@ -114,12 +114,12 @@ struct ContentView: View {
                         VStack(spacing: 8) {
                             Image(systemName: "hand.tap.fill")
                                 .font(.system(size: 40))
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                             
                             Text("DOKUN")
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                         }
                     }
                 }

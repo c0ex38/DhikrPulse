@@ -167,7 +167,7 @@ class DhikrViewModel: ObservableObject {
             colorHex: colorHex,
             createdAt: Date()
         )
-        try? userRef.collection("categories").addDocument(from: newCategory)
+        _ = try? userRef.collection("categories").addDocument(from: newCategory)
     }
     
     func deleteCategory(_ category: DhikrCategory) {
@@ -311,7 +311,7 @@ class DhikrViewModel: ObservableObject {
         // Eğer döküman hiç yoksa diye setData ile merge kullanıyoruz.
         userRef.setData(["isPro": isPro], merge: true) { [weak self] error in
             if let error = error {
-                Task { @MainActor in
+                Task { @MainActor [weak self] in
                     self?.errorMessage = "Premium statüsü güncellenirken bir hata oluştu: \(error.localizedDescription)"
                     self?.showError = true
                 }

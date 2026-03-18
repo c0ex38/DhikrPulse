@@ -35,7 +35,7 @@ struct UserProfileHeaderView: View {
                     HStack(spacing: 8) {
                         Text(viewModel.userProfile?.displayName ?? "Anonim Hesap")
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .foregroundColor(.themePrimaryText)
                             .lineLimit(1)
                         
                         // Edit Icon Button
@@ -123,7 +123,7 @@ struct UserProfileHeaderView: View {
                 .foregroundColor(iconColor)
             Text(value)
                 .font(.headline.bold())
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
             Text(label)
                 .font(.caption2)
                 .foregroundColor(.themeSecondaryText)

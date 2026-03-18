@@ -24,7 +24,7 @@ struct StreakCardView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Mevcut Seri (Streak)")
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
             
             HStack(spacing: 16) {
                 ZStack {
@@ -44,7 +44,7 @@ struct StreakCardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(currentStreak > 0 ? "\(currentStreak) Günlük Seri!" : "Henüz seri yok")
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.themePrimaryText)
                     
                     if currentStreak > 0 {
                         Text("Sonraki başarım (\(nextMilestone) gün) için \(nextMilestone - currentStreak) gün kaldı")

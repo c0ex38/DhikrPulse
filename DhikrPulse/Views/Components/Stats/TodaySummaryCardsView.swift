@@ -39,7 +39,7 @@ struct TodaySummaryCardsView: View {
                 
                 Text("\(totalToday)")
                     .font(.system(size: 36, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                 
                 if totalYesterday > 0 || totalToday > 0 {
                     HStack(spacing: 4) {
@@ -73,7 +73,7 @@ struct TodaySummaryCardsView: View {
                 
                 Text(mostFrequentDhikr?.name ?? "Henüz yok")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                     .lineLimit(1)
                 
                 Text("\(mostFrequentDhikr?.currentCount ?? 0) adet")

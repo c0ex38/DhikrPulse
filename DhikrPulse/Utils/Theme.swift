@@ -4,31 +4,52 @@ import SwiftUI
 extension Color {
     // Colors extracted from the Stitch design screenshots
     
-    // The deep dark green/black background (e.g. #0B1612)
+    // The main background: deep dark green/black in dark mode, off-white/very light gray in light mode
     static var themeBackground: Color {
         if let hexString = UserDefaults.standard.string(forKey: "custom_background_hex"),
            let customColor = Color(hex: hexString) {
             return customColor
         }
-        return Color(red: 0.04, green: 0.09, blue: 0.07)
+        return Color(UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 0.04, green: 0.09, blue: 0.07, alpha: 1.0)
+                : UIColor(red: 0.96, green: 0.97, blue: 0.96, alpha: 1.0) // F5F7F5
+        })
     }
     
-    // The slightly lighter dark green card backgrounds
+    // The surface/card backgrounds: slightly lighter dark green in dark mode, pure white in light mode
     static var themeCard: Color {
         if let hexString = UserDefaults.standard.string(forKey: "custom_card_hex"),
            let customColor = Color(hex: hexString) {
             return customColor
         }
-        return Color(red: 0.08, green: 0.15, blue: 0.11)
+        return Color(UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 0.08, green: 0.15, blue: 0.11, alpha: 1.0)
+                : UIColor.white
+        })
     }
     
-    // Secondary accent/text colors
+    // Secondary accent/text colors: green-gray in dark mode, deeper gray in light mode
     static var themeSecondaryText: Color {
         if let hexString = UserDefaults.standard.string(forKey: "custom_text_hex"),
            let customColor = Color(hex: hexString) {
             return customColor
         }
-        return Color(red: 0.5, green: 0.6, blue: 0.55)
+        return Color(UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 0.5, green: 0.6, blue: 0.55, alpha: 1.0)
+                : UIColor(red: 0.4, green: 0.45, blue: 0.42, alpha: 1.0)
+        })
+    }
+    
+    // Primary text/icon color: pure white in dark mode, near black in light mode
+    static var themePrimaryText: Color {
+        return Color(UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor.white
+                : UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1.0)
+        })
     }
     
     /// Dynamic Accent Color based on user's premium selection

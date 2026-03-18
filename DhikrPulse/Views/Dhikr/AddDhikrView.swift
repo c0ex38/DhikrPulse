@@ -26,7 +26,7 @@ struct AddDhikrView: View {
                         TextField("Anlamı / Alt Başlık (İsteğe bağlı)", text: $subtitle)
                     }
                     .listRowBackground(Color.themeCard)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                     
                     Section(header: Text("Kategori / Klasör").foregroundColor(.themeAccent)) {
                         Picker("Klasör Seçin", selection: $selectedCategoryId) {
@@ -51,7 +51,7 @@ struct AddDhikrView: View {
                         }
                     }
                     .listRowBackground(Color.themeCard)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                     
                     Section(header: Text("Hedef").foregroundColor(.themeAccent)) {
                         Picker("Hedef", selection: $target) {
@@ -60,7 +60,6 @@ struct AddDhikrView: View {
                             }
                         }
                         .pickerStyle(.segmented)
-                        .colorScheme(.dark) // Harici segmented picker için koyu mod 
                     }
                     .listRowBackground(Color.themeCard)
                 }

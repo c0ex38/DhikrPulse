@@ -28,7 +28,7 @@ struct DailyTargetSettingView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(defaultTarget == target ? Color.themeAccent : Color.themeBackground)
-                                .foregroundColor(defaultTarget == target ? Color.themeBackground : .white)
+                                .foregroundColor(defaultTarget == target ? Color.themeBackground : .themePrimaryText)
                                 .cornerRadius(10)
                         }
                     }

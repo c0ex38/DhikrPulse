@@ -18,7 +18,7 @@ struct SettingsRowView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.body)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                 Text(subtitle)
                     .font(.caption)
                     .foregroundColor(.themeSecondaryText)

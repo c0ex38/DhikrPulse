@@ -45,7 +45,7 @@ struct PremiumStoreView: View {
                         // MARK: - Hero Banner
                         ZStack(alignment: .bottomLeading) {
                             LinearGradient(
-                                gradient: Gradient(colors: [Color.yellow.opacity(0.8), Color.orange.opacity(0.9)]),
+                                gradient: Gradient(colors: [Color.yellow.opacity(0.8), Color.orange.opacity(0.9), Color.red.opacity(0.7)]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
@@ -53,9 +53,9 @@ struct PremiumStoreView: View {
                             HStack {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Text("PRO STORE")
-                                        .font(.system(size: 32, weight: .black, design: .rounded))
+                                        .font(.system(size: 34, weight: .black, design: .rounded))
                                         .foregroundColor(.white)
-                                        .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 2)
+                                        .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)
                                     
                                     Text("Deneyiminizi zirveye taşıyın.")
                                         .font(.subheadline.bold())
@@ -76,7 +76,19 @@ struct PremiumStoreView: View {
                         .cornerRadius(24)
                         .padding(.horizontal)
                         .padding(.top, 10)
-                        .shadow(color: Color.orange.opacity(0.2), radius: 20, x: 0, y: 10)
+                        .shadow(color: Color.orange.opacity(0.25), radius: 20, x: 0, y: 10)
+                        
+                        // MARK: - Pro Avantajları
+                        if !storeManager.isPro {
+                            VStack(spacing: 12) {
+                                ProFeatureRow(icon: "nosign", title: "Tamamen Reklamsız", desc: "Zihniniz dağılmadan, reklamları sonsuza dek kapatın.", color: .red)
+                                ProFeatureRow(icon: "infinity", title: "Sınırsız Zikir & Klasör", desc: "Dilediğiniz kadar zikir hedefi ve özel kategori oluşturun.", color: .blue)
+                                ProFeatureRow(icon: "paintpalette.fill", title: "Özel Temalar & Dokular", desc: "Uygulamanın ruhunu yansıtan premium tasarım seçeneklerine erişin.", color: .purple)
+                                ProFeatureRow(icon: "chart.bar.xaxis", title: "İleri Düzey İstatistikler", desc: "Kapsamlı geçmiş raporlarına erişin.", color: .green)
+                                ProFeatureRow(icon: "rectangle.3.group", title: "Ana Ekran Araçları", desc: "Çok Yakında: Ana ekrandan (Widget) ilerlemeyi takip edin.", color: .orange)
+                            }
+                            .padding(.horizontal)
+                        }
                         
                         // MARK: - Özel Temalar Bölümü
                         VStack(alignment: .leading, spacing: 16) {
@@ -165,18 +177,16 @@ struct PremiumStoreView: View {
                                         }
                                     }
                                 } label: {
-                                    HStack {
-                                        Text(selectedTheme != originalTheme || touchpadStyle != originalTouchpad ? "ÖNİZLEMEYİ AÇ - \(product.displayPrice)" : "TÜM KİLİTLERİ AÇ")
-                                            .font(.headline.bold())
-                                        Spacer()
-                                        if selectedTheme == originalTheme && touchpadStyle == originalTouchpad {
+                                        HStack {
+                                            Text(selectedTheme != originalTheme || touchpadStyle != originalTouchpad ? "ÖNİZLEMEYİ AÇ" : "TÜM KİLİTLERİ AÇ")
+                                                .font(.headline.bold())
+                                            Spacer()
                                             Text(product.displayPrice)
                                                 .font(.headline.bold())
                                         }
-                                    }
-                                    .padding()
-                                    .foregroundColor(Color.themeBackground)
-                                    .background(activeColor)
+                                        .padding()
+                                        .foregroundColor(Color.themeBackground)
+                                        .background(activeColor)
                                     .shadow(color: activeColor.opacity(0.5), radius: 10, y: 5)
                                     .cornerRadius(16)
                                 }
@@ -211,7 +221,7 @@ struct PremiumStoreView: View {
                                 .foregroundColor(.yellow)
                             Text("PRO Özellikler Aktif")
                                 .font(.headline)
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                         }
                         .padding()
                         .frame(maxWidth: .infinity)
@@ -225,7 +235,6 @@ struct PremiumStoreView: View {
             }
             .navigationTitle("DhikrPulse Mağazası")
             .navigationBarTitleDisplayMode(.inline)
-            .darkNavStyle()
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     CircleIconButton(icon: "xmark") {
@@ -359,7 +368,7 @@ struct StoreTouchpadCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.themePrimaryText)
                     
                     Text(desc)
                         .font(.caption)
@@ -392,6 +401,47 @@ struct StoreTouchpadCard: View {
                     .stroke(isSelected ? activeColor : Color.clear, lineWidth: 2)
             )
         }
+    }
+}
+// MARK: - Pro Feature Row Component
+struct ProFeatureRow: View {
+    let icon: String
+    let title: String
+    let desc: String
+    let color: Color
+    
+    var body: some View {
+        HStack(spacing: 16) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 44, height: 44)
+                
+                Image(systemName: icon)
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(color)
+            }
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.themePrimaryText)
+                
+                Text(desc)
+                    .font(.caption)
+                    .foregroundColor(.themeSecondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.themeCard)
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.themePrimaryText.opacity(0.1), lineWidth: 1)
+        )
     }
 }
 

@@ -3,6 +3,7 @@ import GoogleMobileAds
 import SwiftUI
 import Combine
 
+@MainActor
 class InterstitialAd: NSObject, GADFullScreenContentDelegate, ObservableObject {
     @Published private var interstitial: GADInterstitialAd?
     private let adUnitID: String

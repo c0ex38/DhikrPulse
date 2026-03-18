@@ -99,7 +99,7 @@ struct OnboardingView: View {
             
             Text(title)
                 .font(.title2.bold())
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
                 .multilineTextAlignment(.center)
             
             Text(description)
@@ -130,7 +130,7 @@ struct OnboardingView: View {
             
             Text("Akıllı Hatırlatıcılar")
                 .font(.title2.bold())
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
                 .multilineTextAlignment(.center)
             
             Text("Günlük zikir hedeflerinizi unutmamak için bildirimlere izin verin. (İsteğe bağlı, dilediğiniz zaman ayarlardan değiştirebilirsiniz)")

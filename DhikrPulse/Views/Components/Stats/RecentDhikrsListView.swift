@@ -31,7 +31,7 @@ struct RecentDhikrsListView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(dhikr.name)
                                     .font(.subheadline.bold())
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.themePrimaryText)
                                 Text(relativeDate(from: dhikr.lastUpdated))
                                     .font(.caption2)
                                     .foregroundColor(.themeSecondaryText)
@@ -41,7 +41,7 @@ struct RecentDhikrsListView: View {
                             
                             Text("\(dhikr.currentCount)/\(dhikr.targetCount)")
                                 .font(.headline.bold())
-                                .foregroundColor(.white)
+                                .foregroundColor(.themePrimaryText)
                         }
                         .padding()
                         .background(Color.themeCard)

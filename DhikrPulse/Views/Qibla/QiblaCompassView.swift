@@ -70,7 +70,7 @@ struct QiblaCompassView: View {
             
             Text("Kıbleyi Bulalım")
                 .font(.title2.weight(.bold))
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
             
             Text("Kabe'nin yönünü hassas bir şekilde hesaplayabilmek için konumunuza ihtiyacımız var.")
                 .font(.body)
@@ -108,7 +108,7 @@ struct QiblaCompassView: View {
             
             Text("Konum İzni Gerekli")
                 .font(.title2.weight(.bold))
-                .foregroundColor(.white)
+                .foregroundColor(.themePrimaryText)
             
             Text("Kıble özelliğini kullanabilmek için Ayarlar'dan uygulamanın konum erişimine izin vermelisiniz.")
                 .font(.body)
@@ -123,7 +123,7 @@ struct QiblaCompassView: View {
             } label: {
                 Text("Ayarları Aç")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
                     .background(Color.red.opacity(0.8))
@@ -168,7 +168,7 @@ struct QiblaCompassView: View {
                 } else {
                     ZStack {
                         Circle()
-                            .fill(Color.white.opacity(0.05))
+                            .fill(Color.themePrimaryText.opacity(0.05))
                             .frame(width: 80, height: 80)
                             
                         Image(systemName: "location.north.line.fill")
@@ -190,12 +190,12 @@ struct QiblaCompassView: View {
                             .foregroundColor(.themeSecondaryText)
                         Text("\(Int(qiblaManager.qiblaDirection))°")
                             .font(.headline.monospacedDigit())
-                            .foregroundColor(.white)
+                            .foregroundColor(.themePrimaryText)
                     }
                     
                     Divider()
                         .frame(height: 30)
-                        .background(Color.white.opacity(0.2))
+                        .background(Color.themePrimaryText.opacity(0.2))
                     
                     VStack(spacing: 4) {
                         Text("Yönünüz")
@@ -203,7 +203,7 @@ struct QiblaCompassView: View {
                             .foregroundColor(.themeSecondaryText)
                         Text("\(Int(qiblaManager.heading))°")
                             .font(.headline.monospacedDigit())
-                            .foregroundColor(isAligned ? .themeAccent : .white)
+                            .foregroundColor(isAligned ? .themeAccent : .themePrimaryText)
                     }
                 }
                 .padding(.top, 10)
@@ -217,7 +217,7 @@ struct QiblaCompassView: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            gradient: Gradient(colors: [Color.white.opacity(0.08), Color.white.opacity(0.02)]),
+                            gradient: Gradient(colors: [Color.themePrimaryText.opacity(0.08), Color.themePrimaryText.opacity(0.02)]),
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -226,7 +226,7 @@ struct QiblaCompassView: View {
                     .overlay(
                         Circle().stroke(
                             LinearGradient(
-                                gradient: Gradient(colors: [Color.white.opacity(0.3), Color.white.opacity(0.05)]),
+                                gradient: Gradient(colors: [Color.themePrimaryText.opacity(0.3), Color.themePrimaryText.opacity(0.05)]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             ),
@@ -241,7 +241,7 @@ struct QiblaCompassView: View {
                     ForEach(0..<72) { tick in
                         let isMajor = tick % 18 == 0
                         Rectangle()
-                            .fill(isMajor ? Color.white : Color.white.opacity(0.3))
+                            .fill(isMajor ? Color.themePrimaryText : Color.themePrimaryText.opacity(0.3))
                             .frame(width: isMajor ? 2 : 1, height: isMajor ? 14 : 6)
                             .offset(y: -140)
                             .rotationEffect(.degrees(Double(tick) * 5))
@@ -249,9 +249,9 @@ struct QiblaCompassView: View {
                     
                     // Yön Harfleri
                     Text("N").font(.system(size: 22, weight: .bold)).foregroundColor(.red).offset(y: -110).rotationEffect(.degrees(0))
-                    Text("E").font(.system(size: 18, weight: .semibold)).foregroundColor(.white).offset(y: -110).rotationEffect(.degrees(90))
-                    Text("S").font(.system(size: 18, weight: .semibold)).foregroundColor(.white).offset(y: -110).rotationEffect(.degrees(180))
-                    Text("W").font(.system(size: 18, weight: .semibold)).foregroundColor(.white).offset(y: -110).rotationEffect(.degrees(270))
+                    Text("E").font(.system(size: 18, weight: .semibold)).foregroundColor(.themePrimaryText).offset(y: -110).rotationEffect(.degrees(90))
+                    Text("S").font(.system(size: 18, weight: .semibold)).foregroundColor(.themePrimaryText).offset(y: -110).rotationEffect(.degrees(180))
+                    Text("W").font(.system(size: 18, weight: .semibold)).foregroundColor(.themePrimaryText).offset(y: -110).rotationEffect(.degrees(270))
                     
                     // Kabe Göstergesi (Kadran üzerinde sabit durur, doğru hedefe bakar)
                     ZStack {
@@ -272,7 +272,7 @@ struct QiblaCompassView: View {
                         .fill(Color.black)
                         .frame(width: 16, height: 16)
                         .overlay(
-                            Circle().stroke(Color.white.opacity(0.5), lineWidth: 2)
+                            Circle().stroke(Color.themePrimaryText.opacity(0.5), lineWidth: 2)
                         )
                         .shadow(color: .black.opacity(0.5), radius: 3, x: 0, y: 2)
                 }
@@ -284,7 +284,7 @@ struct QiblaCompassView: View {
                 VStack {
                     Image(systemName: "arrowtriangle.down.fill")
                         .font(.system(size: 24))
-                        .foregroundColor(isAligned ? .themeAccent : .white)
+                        .foregroundColor(isAligned ? .themeAccent : .themePrimaryText)
                         .shadow(color: isAligned ? Color.themeAccent.opacity(0.8) : Color.black.opacity(0.3), radius: isAligned ? 8 : 4, x: 0, y: 2)
                         .offset(y: -20)
                     Spacer()

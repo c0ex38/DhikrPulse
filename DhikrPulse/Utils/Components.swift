@@ -122,12 +122,11 @@ struct ProgressBarView: View {
     }
 }
 
-// MARK: - Koyu NavigationStack Stili (DarkNavModifier)
+// MARK: - Adaptive NavigationStack Stili (AdaptiveNavModifier)
 // Tüm sayfaların NavigationStack'inde tekrar eden modifier zinciri
-struct DarkNavModifier: ViewModifier {
+struct AdaptiveNavModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(Color.themeBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
     }
@@ -135,7 +134,7 @@ struct DarkNavModifier: ViewModifier {
 
 extension View {
     func darkNavStyle() -> some View {
-        self.modifier(DarkNavModifier())
+        self.modifier(AdaptiveNavModifier())
     }
 }
 
@@ -182,7 +181,7 @@ struct PreferenceRow: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
                     .font(.body)
                 Text(subtitle)
                     .foregroundColor(.themeSecondaryText)
@@ -227,7 +226,7 @@ struct DhikrProgressCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(dhikr.name)
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.themePrimaryText)
                 }
                 
                 Spacer()
@@ -251,7 +250,7 @@ struct DhikrProgressCard: View {
                 
                 Text("\(dhikr.currentCount) / \(dhikr.targetCount)")
                     .font(.caption.bold())
-                    .foregroundColor(.white)
+                    .foregroundColor(.themePrimaryText)
             }
             .padding(.top, 4)
             

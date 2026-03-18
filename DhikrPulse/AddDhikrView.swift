@@ -10,6 +10,8 @@ struct AddDhikrView: View {
     @State private var title: String = ""
     @State private var subtitle: String = ""
     @State private var target: Int = 33
+    @State private var selectedCategoryId: String = DhikrCategory.otherCategoryId
+    @State private var showingAddCategory = false
     
     let targetOptions = [33, 99, 100, 500, 1000]
     
@@ -22,6 +24,31 @@ struct AddDhikrView: View {
                     Section(header: Text("Zikir Bilgileri").foregroundColor(.themeAccent)) {
                         TextField("Zikir Adı (Örn: Sübhanallah)", text: $title)
                         TextField("Anlamı / Alt Başlık (İsteğe bağlı)", text: $subtitle)
+                    }
+                    .listRowBackground(Color.themeCard)
+                    .foregroundColor(.white)
+                    
+                    Section(header: Text("Kategori / Klasör").foregroundColor(.themeAccent)) {
+                        Picker("Klasör Seçin", selection: $selectedCategoryId) {
+                            Text("📁 Diğer / Klasörsüz")
+                                .tag(DhikrCategory.otherCategoryId)
+                            
+                            ForEach(viewModel.categories) { category in
+                                Text("\(Image(systemName: category.iconName)) \(category.name)")
+                                    .tag(category.id ?? "")
+                            }
+                        }
+                        .tint(.themeAccent)
+                        
+                        Button(action: {
+                            showingAddCategory = true
+                        }) {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Yeni Klasör Oluştur")
+                            }
+                            .foregroundColor(.themeAccent)
+                        }
                     }
                     .listRowBackground(Color.themeCard)
                     .foregroundColor(.white)
@@ -65,6 +92,10 @@ struct AddDhikrView: View {
             PremiumStoreView()
                 .environmentObject(storeManager)
         }
+        .sheet(isPresented: $showingAddCategory) {
+            AddCategoryView()
+                .environmentObject(viewModel)
+        }
     }
     
     private func saveDhikr() {
@@ -73,7 +104,8 @@ struct AddDhikrView: View {
             return
         }
         
-        viewModel.addDhikr(name: title, targetCount: target)
+        let finalCategoryId = (selectedCategoryId == DhikrCategory.otherCategoryId) ? nil : selectedCategoryId
+        viewModel.addDhikr(name: title, targetCount: target, categoryId: finalCategoryId)
         dismiss()
     }
 }

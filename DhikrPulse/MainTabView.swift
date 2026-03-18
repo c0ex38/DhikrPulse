@@ -43,29 +43,37 @@ struct MainTabView: View {
             }
             .tag(0)
             
-            // Tab 2: Dhikr List
+            // Tab 2: Qibla Compass
+            QiblaCompassView()
+                .tabItem {
+                    Image(systemName: "location.north.line.fill")
+                    Text("Kıble")
+                }
+            .tag(1)
+            
+            // Tab 3: Dhikr List
             DhikrListView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "list.dash")
                     Text("Kütüphane")
                 }
-            .tag(1)
+            .tag(2)
             
-            // Tab 3: Stats
+            // Tab 4: Stats
             InsightsStatsView()
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
                     Text("İstatistikler")
                 }
-            .tag(2)
+            .tag(3)
             
-            // Tab 4: Settings
+            // Tab 5: Settings
             SettingsGoalsView()
                 .tabItem {
                     Image(systemName: "gearshape.fill")
                     Text("Ayarlar")
                 }
-            .tag(3)
+            .tag(4)
         }
         .accentColor(.themeAccent) // Use global custom accent color
         .onAppear {
@@ -89,17 +97,15 @@ struct MainTabView: View {
     private func setupTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        // themeBackground: red: 0.04, green: 0.09, blue: 0.07
-        appearance.backgroundColor = UIColor(red: 0.04, green: 0.09, blue: 0.07, alpha: 1.0)
+        appearance.backgroundColor = UIColor(Color.themeBackground)
         
         // Unselected items
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.gray
-        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor.systemGray
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.systemGray]
         
         // Selected items
-        // themeAccent: red: 0.12, green: 0.84, blue: 0.45
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 0.12, green: 0.84, blue: 0.45, alpha: 1.0)
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(red: 0.12, green: 0.84, blue: 0.45, alpha: 1.0)]
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(Color.themeAccent)
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(Color.themeAccent)]
         
         UITabBar.appearance().standardAppearance = appearance
         if #available(iOS 15.0, *) {

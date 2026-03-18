@@ -1,21 +1,13 @@
 import SwiftUI
 import FirebaseCore
 import UserNotifications
+import GoogleMobileAds
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     FirebaseApp.configure()
-      
-      // Request Notification Authorization
-      UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
-          if let error = error {
-              print("Bildirim izni istenirken hata oluştu: \(error.localizedDescription)")
-          } else {
-              print("Bildirim izni durumu: \(granted)")
-          }
-      }
-      
+    GADMobileAds.sharedInstance().start(completionHandler: nil)
     return true
   }
 }
@@ -27,18 +19,31 @@ struct DhikrPulseApp: App {
     @StateObject private var storeManager = StoreManager()
     @State private var showMainApp = false
     
+    @AppStorage("has_seen_onboarding") private var hasSeenOnboarding = false
+    @AppStorage("app_color_scheme") private var schemeType: Int = 0
+    
     var body: some Scene {
         WindowGroup {
-            if showMainApp {
-                MainTabView()
-                    .environmentObject(dhikrViewModel)
-                    .environmentObject(storeManager)
-                    .onAppear {
-                        storeManager.dhikrViewModel = dhikrViewModel
+            Group {
+                if showMainApp {
+                    if hasSeenOnboarding {
+                        MainTabView()
+                            .environmentObject(dhikrViewModel)
+                            .environmentObject(storeManager)
+                            .onAppear {
+                                storeManager.dhikrViewModel = dhikrViewModel
+                                NotificationManager.shared.clearBadge()
+                            }
+                    } else {
+                        OnboardingView(hasSeenOnboarding: $hasSeenOnboarding)
+                            .environmentObject(dhikrViewModel)
+                            .environmentObject(storeManager)
                     }
-            } else {
-                SplashView(showMainApp: $showMainApp)
+                } else {
+                    SplashView(showMainApp: $showMainApp)
+                }
             }
+            .preferredColorScheme(AppColorScheme(rawValue: schemeType)?.colorScheme)
         }
     }
 }

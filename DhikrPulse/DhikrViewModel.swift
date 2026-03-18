@@ -3,10 +3,14 @@ import Foundation
 @preconcurrency import FirebaseAuth
 @preconcurrency import FirebaseFirestore
 import Combine
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 class DhikrViewModel: ObservableObject {
     @Published var dhikrs: [DhikrItem] = []
     @Published var dailyLogs: [DailyLog] = []
+    @Published var categories: [DhikrCategory] = []
     @Published var userProfile: UserProfile?
     @Published var currentUserId: String?
     
@@ -136,11 +140,50 @@ class DhikrViewModel: ObservableObject {
                 self.dailyLogs = documents.compactMap { doc -> DailyLog? in
                     try? doc.data(as: DailyLog.self)
                 }
+                
+                // Arkaplandan gelen tıklamaları işle
+                self.processWidgetClicks()
+            }
+            
+        // Listen to Categories
+        userRef.collection("categories")
+            .order(by: "createdAt", descending: false)
+            .addSnapshotListener { querySnapshot, error in
+                if let error = error {
+                    print("Error getting categories: \(error.localizedDescription)")
+                    return
+                }
+                guard let documents = querySnapshot?.documents else { return }
+                self.categories = documents.compactMap { try? $0.data(as: DhikrCategory.self) }
             }
     }
     
+    // MARK: - CRUD Operations (Categories)
+    func addCategory(name: String, iconName: String, colorHex: String) {
+        guard let userRef = userDocRef() else { return }
+        let newCategory = DhikrCategory(
+            name: name,
+            iconName: iconName,
+            colorHex: colorHex,
+            createdAt: Date()
+        )
+        try? userRef.collection("categories").addDocument(from: newCategory)
+    }
+    
+    func deleteCategory(_ category: DhikrCategory) {
+        guard let userRef = userDocRef(), let id = category.id else { return }
+        // Update all dhikrs in this category to nil (Other)
+        let dhikrsToUpdate = dhikrs.filter { $0.categoryId == id }
+        for var d in dhikrsToUpdate {
+            d.categoryId = nil
+            updateDhikr(d)
+        }
+        // Delete category
+        userRef.collection("categories").document(id).delete()
+    }
+    
     // MARK: - CRUD Operations (DhikrItem)
-    func addDhikr(name: String, targetCount: Int) {
+    func addDhikr(name: String, targetCount: Int, categoryId: String? = nil) {
         guard let userRef = userDocRef() else { return }
         let newDhikr = DhikrItem(
             name: name,
@@ -148,7 +191,8 @@ class DhikrViewModel: ObservableObject {
             targetCount: targetCount,
             createdAt: Date(),
             lastUpdated: Date(),
-            isArchived: false
+            isArchived: false,
+            categoryId: categoryId
         )
         do {
             try userRef.collection("dhikrs").addDocument(from: newDhikr)
@@ -167,6 +211,11 @@ class DhikrViewModel: ObservableObject {
         updatedDhikr.lastUpdated = Date()
         do {
             try userRef.collection("dhikrs").document(id).setData(from: updatedDhikr)
+            
+            // Eğer bu öğe aktif zikirse, Widget'a gönder
+            if UserDefaults.standard.string(forKey: "active_dhikr_id") == id {
+                syncToWidget(item: updatedDhikr)
+            }
         } catch {
             Task { @MainActor in
                 self.errorMessage = "Zikir güncellenemedi. Değişiklikler kaydedilmemiş olabilir."
@@ -282,5 +331,34 @@ class DhikrViewModel: ObservableObject {
         
         profile.displayName = finalName
         try? userRef.setData(from: profile, merge: true)
+    }
+    
+    // MARK: - WidgetKit Integration
+    func syncToWidget(item: DhikrItem) {
+        if let defaults = UserDefaults(suiteName: "group.com.cagriozay.DhikrPulse") {
+            defaults.set(item.name, forKey: "widget_dhikr_name")
+            defaults.set(item.currentCount, forKey: "widget_dhikr_count")
+            defaults.set(item.targetCount, forKey: "widget_dhikr_target")
+            
+            // Force Widget update
+            #if canImport(WidgetKit)
+            WidgetCenter.shared.reloadAllTimelines()
+            #endif
+        }
+    }
+    
+    func processWidgetClicks() {
+        if let defaults = UserDefaults(suiteName: "group.com.cagriozay.DhikrPulse") {
+            let pendingClicks = defaults.integer(forKey: "widget_unprocessed_clicks")
+            if pendingClicks > 0 {
+                let activeId = UserDefaults.standard.string(forKey: "active_dhikr_id") ?? ""
+                if var activeItem = dhikrs.first(where: { $0.id == activeId }) {
+                    activeItem.currentCount += pendingClicks
+                    updateDhikr(activeItem)
+                    logDailyZikir(count: pendingClicks)
+                }
+                defaults.set(0, forKey: "widget_unprocessed_clicks")
+            }
+        }
     }
 }

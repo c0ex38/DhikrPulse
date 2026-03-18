@@ -32,11 +32,19 @@ struct CustomizationHubView: View {
     
     // MARK: - AppStorage
     @AppStorage("premium_theme_color") private var selectedTheme: String = "emerald"
+    @AppStorage("app_color_scheme") private var schemeType: Int = 0
     @AppStorage("premium_custom_color_hex") private var customColorHex: String = ""
+    @AppStorage("custom_background_hex") private var customBackgroundHex: String = ""
+    @AppStorage("custom_card_hex") private var customCardHex: String = ""
+    @AppStorage("custom_text_hex") private var customTextHex: String = ""
+    
     @AppStorage("premium_touchpad_style") private var touchpadStyle: String = "classic"
     @AppStorage("background_type") private var selectedBackground: String = ZikirBackgroundType.classic.rawValue
     
     @State private var tempCustomColor: Color = .white
+    @State private var tempCustomBackground: Color = Color(red: 0.04, green: 0.09, blue: 0.07)
+    @State private var tempCustomCard: Color = Color(red: 0.08, green: 0.15, blue: 0.11)
+    @State private var tempCustomText: Color = Color(red: 0.5, green: 0.6, blue: 0.55)
     
     // MARK: - Data
     let themes: [ThemeItem] = [
@@ -116,6 +124,16 @@ struct CustomizationHubView: View {
                     tempCustomColor = color
                 } else {
                     tempCustomColor = Color(red: 0.12, green: 0.84, blue: 0.45)
+                }
+                
+                if !customBackgroundHex.isEmpty, let color = Color(hex: customBackgroundHex) {
+                    tempCustomBackground = color
+                }
+                if !customCardHex.isEmpty, let color = Color(hex: customCardHex) {
+                    tempCustomCard = color
+                }
+                if !customTextHex.isEmpty, let color = Color(hex: customTextHex) {
+                    tempCustomText = color
                 }
             }
             // Picker rengini aktif temaya göre ayarlayalım
@@ -207,7 +225,22 @@ struct CustomizationHubView: View {
     // MARK: - Theme Section
     private var themeSection: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Uygulamanın genel aksan rengini değiştirin.")
+            Text("Görünüm Modu")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.horizontal)
+            
+            Picker("Görünüm Modu", selection: $schemeType) {
+                Text("Sistem").tag(0)
+                Text("Açık").tag(1)
+                Text("Koyu").tag(2)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding(.horizontal)
+            
+            Divider().background(Color.white.opacity(0.1)).padding(.vertical, 8)
+            
+            Text("Uygulamanın genel aksan rengini ve gelişmiş renkleri değiştirin.")
                 .font(.subheadline)
                 .foregroundColor(.themeSecondaryText)
                 .padding(.horizontal)
@@ -222,38 +255,23 @@ struct CustomizationHubView: View {
                     VStack(spacing: 12) {
                         ZStack {
                             if isCustomItem {
-                                // Custom Color Picker Element
-                                ZStack {
-                                    AngularGradient(gradient: Gradient(colors: [.red, .yellow, .green, .blue, .purple, .red]), center: .center)
-                                        .clipShape(Circle())
-                                        .frame(height: 80)
-                                        .shadow(color: tempCustomColor.opacity(0.5), radius: 10, y: 5)
-                                    
-                                    Circle()
-                                        .fill(Color.themeCard)
-                                        .frame(width: 60, height: 60)
-                                    
-                                    // Sadece renk seçici
-                                    ColorPicker("", selection: Binding(
-                                        get: { tempCustomColor },
-                                        set: { newValue in
-                                            tempCustomColor = newValue
-                                            if storeManager.isPro {
-                                                if let hex = newValue.toHex() {
-                                                    customColorHex = hex
-                                                }
-                                                // Eğer bu item seçili değilse hemen seç
-                                                if selectedTheme != "custom" {
-                                                    withAnimation { selectedTheme = "custom" }
-                                                }
-                                            } else {
-                                                showingPremiumStore = true
-                                            }
+                                // Gelişmiş Renk Seçici Butonu (Aksan rengini temsil eder)
+                                Circle()
+                                    .fill(tempCustomColor)
+                                    .frame(height: 80)
+                                    .shadow(color: tempCustomColor.opacity(0.5), radius: 10, y: 5)
+                                    .overlay(
+                                        Image(systemName: "paintpalette.fill")
+                                            .foregroundColor(.white)
+                                            .font(.title)
+                                    )
+                                    .onTapGesture {
+                                        if isLocked {
+                                            showingPremiumStore = true
+                                        } else {
+                                            withAnimation { selectedTheme = "custom" }
                                         }
-                                    ))
-                                    .labelsHidden()
-                                    .scaleEffect(1.5) // Hit area'yı büyüt
-                                }
+                                    }
                             } else {
                                 // Standard Theme Element
                                 Button {
@@ -261,6 +279,10 @@ struct CustomizationHubView: View {
                                         showingPremiumStore = true
                                     } else {
                                         withAnimation { selectedTheme = theme.id }
+                                        // Butona basıldığında AppStorage'ı temizleyerek orjinal renklere dönelim
+                                        customBackgroundHex = ""
+                                        customCardHex = ""
+                                        customTextHex = ""
                                     }
                                 } label: {
                                     Circle()
@@ -278,11 +300,10 @@ struct CustomizationHubView: View {
                                     Image(systemName: "lock.fill")
                                         .foregroundColor(.white)
                                 }
-                            } else if isSelected {
+                            } else if isSelected && !isCustomItem {
                                 Image(systemName: "checkmark")
                                     .font(.title2.bold())
                                     .foregroundColor(.white)
-                                    // Custom color'da checkmark gözüksün ama basılmayı engellemesin diye allowsHitTesting(false)
                                     .allowsHitTesting(false)
                             }
                         }
@@ -294,19 +315,7 @@ struct CustomizationHubView: View {
                         .padding(.bottom, 8)
                         
                         // Text Label Area
-                        if isCustomItem {
-                            Button {
-                                if isLocked {
-                                    showingPremiumStore = true
-                                } else {
-                                    withAnimation { selectedTheme = "custom" }
-                                }
-                            } label: {
-                                textLabel(themeName: theme.name, isSelected: isSelected, isLocked: isLocked)
-                            }
-                        } else {
-                            textLabel(themeName: theme.name, isSelected: isSelected, isLocked: isLocked)
-                        }
+                        textLabel(themeName: theme.name, isSelected: isSelected, isLocked: isLocked)
                     }
                     .padding(.vertical)
                     .frame(maxWidth: .infinity)
@@ -319,7 +328,68 @@ struct CustomizationHubView: View {
                 }
             }
             .padding(.horizontal)
+            
+            // Eğer "Kendi Rengim" seçiliyse Full Color Picker panelini göster
+            if selectedTheme == "custom" {
+                advancedColorPanel
+            }
         }
+    }
+    
+    // MARK: - Advanced Color Panel
+    private var advancedColorPanel: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Gelişmiş Renk Editörü")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            VStack(spacing: 0) {
+                colorRow(title: "Aksan (İkonlar & Çizgiler)", selection: $tempCustomColor) { hex in
+                    customColorHex = hex
+                }
+                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                colorRow(title: "Arka Plan", selection: $tempCustomBackground) { hex in
+                    customBackgroundHex = hex
+                }
+                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                colorRow(title: "Kartlar & Kutular", selection: $tempCustomCard) { hex in
+                    customCardHex = hex
+                }
+                Divider().background(Color.white.opacity(0.1)).padding(.leading, 16)
+                colorRow(title: "İkincil Metin", selection: $tempCustomText) { hex in
+                    customTextHex = hex
+                }
+            }
+            .background(Color.themeCard)
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 1)
+            )
+        }
+        .padding(.horizontal)
+        .padding(.top, 16)
+        .transition(.opacity.combined(with: .move(edge: .top)))
+    }
+    
+    private func colorRow(title: String, selection: Binding<Color>, onUpdate: @escaping (String) -> Void) -> some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.white)
+            Spacer()
+            // Sadece renk seçici kısmı gizli, etrafında renk önizlemesi var
+            ColorPicker("", selection: Binding(
+                get: { selection.wrappedValue },
+                set: { newValue in
+                    selection.wrappedValue = newValue
+                    if let hex = newValue.toHex() {
+                        onUpdate(hex)
+                    }
+                }
+            ))
+            .labelsHidden()
+        }
+        .padding()
     }
     
     private func textLabel(themeName: String, isSelected: Bool, isLocked: Bool) -> some View {

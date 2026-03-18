@@ -10,6 +10,7 @@ struct CounterView: View {
     
     @EnvironmentObject private var viewModel: DhikrViewModel
     @EnvironmentObject private var storeManager: StoreManager
+    @StateObject private var interstitialAd = InterstitialAd()
     
     // Current Dhikr calculated property
     private var dhikrItem: DhikrItem? {
@@ -25,6 +26,7 @@ struct CounterView: View {
     
     // UI State
     @State private var scale: CGFloat = 1.0
+    @State private var showConfetti: Bool = false
     
     // Haptic Feedback
     private let impactMedium = UIImpactFeedbackGenerator(style: .medium)
@@ -34,6 +36,10 @@ struct CounterView: View {
         ZStack {
             // Background
             DynamicBackgroundView(type: ZikirBackgroundType(rawValue: selectedBackground) ?? .classic)
+            
+            ConfettiView(trigger: $showConfetti)
+                .ignoresSafeArea()
+                .zIndex(100)
             
             VStack {
                 // Top Navigation Bar
@@ -213,7 +219,15 @@ struct CounterView: View {
                             .tracking(1)
                     }
                 }
-                .padding(.bottom, 30)
+                .padding(.bottom, 10)
+                
+                // AdMob Banner for Free Users
+                if !storeManager.isPro {
+                    AdBannerView(adUnitID: "ca-app-pub-3565786409265176/9551521802")
+                        .frame(width: 320, height: 50)
+                        .background(Color.black.opacity(0.1))
+                        .padding(.bottom, 10)
+                }
             }
         }
         .onAppear {
@@ -240,6 +254,12 @@ struct CounterView: View {
                 // Sadece o an hedefe ulaştıysa notification ver. Önceden ulaştıysa normal impact ver.
                 if currentItem.currentCount == currentItem.targetCount {
                     notificationFeedback.notificationOccurred(.success)
+                    showConfetti = true
+                    
+                    // Show Interstitial if not pro
+                    if !storeManager.isPro {
+                        interstitialAd.showAd()
+                    }
                 } else {
                     impactMedium.impactOccurred()
                 }

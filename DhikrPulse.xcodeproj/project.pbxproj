@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60619C081C86CDB4285CCB09 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 46A39E74FE1BE938B640DA9F /* GoogleMobileAds */; };
 		AA000001000000000000AAAA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AA000011000000000000AAAA /* FirebaseCore */; };
 		AA000002000000000000AAAA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AA000012000000000000AAAA /* FirebaseAuth */; };
 		AA000003000000000000AAAA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = AA000013000000000000AAAA /* FirebaseFirestore */; };
@@ -32,6 +33,7 @@
 				AA000001000000000000AAAA /* FirebaseCore in Frameworks */,
 				AA000002000000000000AAAA /* FirebaseAuth in Frameworks */,
 				AA000003000000000000AAAA /* FirebaseFirestore in Frameworks */,
+				60619C081C86CDB4285CCB09 /* GoogleMobileAds in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +87,7 @@
 				AA000011000000000000AAAA /* FirebaseCore */,
 				AA000012000000000000AAAA /* FirebaseAuth */,
 				AA000013000000000000AAAA /* FirebaseFirestore */,
+				46A39E74FE1BE938B640DA9F /* GoogleMobileAds */,
 			);
 			productName = DhikrPulse;
 			productReference = 50612CB02F696B4B00057316 /* DhikrPulse.app */;
@@ -116,6 +119,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8CE5FAE9EB5ECA568A8E7FAB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50612CB12F696B4B00057316 /* Products */;
@@ -279,6 +283,8 @@
 				DEVELOPMENT_TEAM = 5QB9F8B9JZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Kıble yönünü bulmak için konumunuza ihtiyacımız var.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -311,6 +317,8 @@
 				DEVELOPMENT_TEAM = 5QB9F8B9JZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Kıble yönünü bulmak için konumunuza ihtiyacımız var.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -365,9 +373,22 @@
 				minimumVersion = 12.11.0;
 			};
 		};
+		8CE5FAE9EB5ECA568A8E7FAB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		46A39E74FE1BE938B640DA9F /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8CE5FAE9EB5ECA568A8E7FAB /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
 		AA000011000000000000AAAA /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

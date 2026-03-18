@@ -1,5 +1,6 @@
 import Foundation
 import UserNotifications
+import UIKit
 import Combine
 
 class NotificationManager: ObservableObject {
@@ -7,11 +8,13 @@ class NotificationManager: ObservableObject {
     
     @Published var isAuthorized = false
     
-    // Uygulama açılışında vs. izin istemek için
-    func requestAuthorization() {
+    // MARK: - İzin Yönetimi
+    
+    func requestAuthorization(completion: ((Bool) -> Void)? = nil) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
                 self.isAuthorized = granted
+                completion?(granted)
                 if let error = error {
                     print("Bildirim izni istenirken hata oluştu: \(error.localizedDescription)")
                 }
@@ -27,32 +30,92 @@ class NotificationManager: ObservableObject {
         }
     }
     
-    func scheduleDailyReminder(id: String, title: String, body: String, hour: Int, minute: Int) {
+    /// Kullanıcıyı sistem Ayarlar > Bildirimler ekranına yönlendirir
+    func openSystemSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    // MARK: - Çoklu Hatırlatıcı Planlama
+    
+    /// Mesaj rotasyonu ile 7 gün ileriye günlük hatırlatıcı planlar
+    private let messages = [
+        "Günün zikir hedefini tamamladın mı?",
+        "Kalpler ancak Allah'ı anmakla huzur bulur.",
+        "Biraz vakit ayırıp zikir çekmeye ne dersin?",
+        "Manevi huzur için DhikrPulse'a uğra.",
+        "Zikir, kalbin gıdasıdır. Bugün besledin mi?",
+        "Her gün bir adım daha. Serini kırma! 🔥",
+        "Ruhunu dinlendir, zikrini çek. 🌙"
+    ]
+    
+    /// Belirli bir saat için 7 günlük rotasyonlu bildirim planlar
+    func scheduleRotatingReminders(hour: Int, minute: Int, reminderId: String) {
+        // Bu saat için önceki bildirimleri temizle
+        cancelRemindersForId(reminderId)
+        
+        let calendar = Calendar.current
+        let today = Date()
+        
+        for dayOffset in 0..<7 {
+            guard let targetDate = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
+            
+            let content = UNMutableNotificationContent()
+            content.title = "DhikrPulse Vakti 🌙"
+            content.body = messages[dayOffset % messages.count]
+            content.sound = .default
+            content.badge = 1
+            
+            var dateComponents = calendar.dateComponents([.year, .month, .day], from: targetDate)
+            dateComponents.hour = hour
+            dateComponents.minute = minute
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            let requestId = "\(reminderId)_day\(dayOffset)"
+            let request = UNNotificationRequest(identifier: requestId, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Bildirim eklenirken hata: \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        // 7 günden sonra tekrar planlanması için kalıcı bir tekrar eden bildirim de ekle
+        scheduleRepeatingFallback(hour: hour, minute: minute, reminderId: reminderId)
+        
+        print("7 günlük rotasyonlu bildirimler planlandı: \(hour):\(String(format: "%02d", minute)) — ID: \(reminderId)")
+    }
+    
+    /// 7 günlük rotasyon bittikten sonra devam eden yedek (fallback) tekrar eden bildirim
+    private func scheduleRepeatingFallback(hour: Int, minute: Int, reminderId: String) {
         let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = body
+        content.title = "DhikrPulse Vakti 🌙"
+        content.body = messages.randomElement() ?? messages[0]
         content.sound = .default
+        content.badge = 1
         
         var dateComponents = DateComponents()
         dateComponents.hour = hour
         dateComponents.minute = minute
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(identifier: "\(reminderId)_repeating", content: content, trigger: trigger)
         
-        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Bildirim eklenirken hata: \(error.localizedDescription)")
-            } else {
-                print("Günlük bildirim başarıyla planlandı: \(hour):\(minute) - \(title)")
-            }
-        }
+        UNUserNotificationCenter.current().add(request)
     }
     
-    func cancelReminder(id: String) {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
-        print("Bildirim iptal edildi: \(id)")
+    /// Belirli bir ID prefix'ine ait tüm bildirimleri iptal eder
+    func cancelRemindersForId(_ reminderId: String) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            let idsToRemove = requests
+                .filter { $0.identifier.hasPrefix(reminderId) }
+                .map { $0.identifier }
+            
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idsToRemove)
+            print("Bildirimler iptal edildi (\(idsToRemove.count) adet): \(reminderId)")
+        }
     }
     
     func cancelAllReminders() {
@@ -60,7 +123,16 @@ class NotificationManager: ObservableObject {
         print("Tüm bildirimler iptal edildi")
     }
     
-    // Geliştirme sürecinde faydalı olması için test bildirimi
+    // MARK: - Badge Yönetimi
+    
+    func clearBadge() {
+        DispatchQueue.main.async {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
+    }
+    
+    // MARK: - Test Bildirimi
+    
     func scheduleTestNotification(seconds: TimeInterval = 5) {
         let content = UNMutableNotificationContent()
         content.title = "DhikrPulse"

@@ -10,6 +10,7 @@ struct DhikrListView: View {
     @State private var searchText = ""
     @State private var showingAddSheet = false
     @State private var showingPremiumSheet = false
+    @State private var expandedCategories: [String: Bool] = [:]
     
     // Derived values for the "Daily Completion" widget based on the Stitch specs
     private var totalTarget: Int {
@@ -32,6 +33,22 @@ struct DhikrListView: View {
         } else {
             return viewModel.dhikrs.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
+    }
+    
+    private var groupedDhikrs: [(category: DhikrCategory?, dhikrs: [DhikrItem])] {
+        var result: [(DhikrCategory?, [DhikrItem])] = []
+        
+        for cat in viewModel.categories {
+            let catDhikrs = filteredDhikrs.filter { $0.categoryId == cat.id }
+            result.append((cat, catDhikrs))
+        }
+        
+        let others = filteredDhikrs.filter { $0.categoryId == nil || $0.categoryId == DhikrCategory.otherCategoryId }
+        if !others.isEmpty || result.isEmpty {
+            result.append((nil, others))
+        }
+        
+        return result
     }
     
     var body: some View {
@@ -60,23 +77,82 @@ struct DhikrListView: View {
                                 // Action to see more or filter
                             }
                             
-                            // The List of Dhikrs
-                            ForEach(filteredDhikrs) { dhikr in
-                                Button(action: {
-                                    if let id = dhikr.id {
-                                        activeDhikrIdAsString = id
+                            // The Accordion List of Dhikrs
+                            ForEach(groupedDhikrs, id: \.category?.id) { group in
+                                let catId = group.category?.id ?? "other"
+                                
+                                DisclosureGroup(
+                                    isExpanded: Binding(
+                                        get: { expandedCategories[catId] ?? true },
+                                        set: { expandedCategories[catId] = $0 }
+                                    )
+                                ) {
+                                    VStack(spacing: 8) {
+                                        if group.dhikrs.isEmpty {
+                                            Text("Bu klasörde henüz zikir yok.")
+                                                .font(.subheadline)
+                                                .foregroundColor(.themeSecondaryText)
+                                                .padding(.vertical, 8)
+                                        } else {
+                                            ForEach(group.dhikrs) { dhikr in
+                                                Button(action: {
+                                                    if let id = dhikr.id {
+                                                        activeDhikrIdAsString = id
+                                                    }
+                                                    selectedTab = 0 // Switch to Counter tab
+                                                }) {
+                                                    DhikrProgressCard(dhikr: dhikr, isActive: activeDhikrIdAsString == dhikr.id)
+                                                }
+                                                .buttonStyle(PlainButtonStyle())
+                                                .contextMenu {
+                                                    Button(role: .destructive) {
+                                                        viewModel.deleteDhikr(dhikr)
+                                                    } label: {
+                                                        Label("Sil", systemImage: "trash")
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                    selectedTab = 0 // Switch to Counter tab
-                                }) {
-                                    DhikrProgressCard(dhikr: dhikr, isActive: activeDhikrIdAsString == dhikr.id)
+                                    .padding(.top, 8)
+                                } label: {
+                                    HStack {
+                                        if let cat = group.category {
+                                            Image(systemName: cat.iconName)
+                                                .foregroundColor(Color(hex: cat.colorHex))
+                                            Text(cat.name)
+                                                .font(.headline)
+                                                .foregroundColor(.white)
+                                        } else {
+                                            Image(systemName: "folder.fill")
+                                                .foregroundColor(.gray)
+                                            Text("Genel")
+                                                .font(.headline)
+                                                .foregroundColor(.white)
+                                        }
+                                        Spacer()
+                                        Text("\(group.dhikrs.count)")
+                                            .font(.caption)
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(Color.white.opacity(0.15))
+                                            .clipShape(Capsule())
+                                    }
+                                    .padding(.vertical, 8)
+                                    .padding(.horizontal)
+                                    .background(Color.themeCard)
+                                    .cornerRadius(12)
                                 }
-                                .buttonStyle(PlainButtonStyle())
+                                .tint(.themeAccent)
                                 .padding(.horizontal)
                                 .contextMenu {
-                                    Button(role: .destructive) {
-                                        viewModel.deleteDhikr(dhikr)
-                                    } label: {
-                                        Label("Sil", systemImage: "trash")
+                                    if let cat = group.category {
+                                        Button(role: .destructive) {
+                                            viewModel.deleteCategory(cat)
+                                        } label: {
+                                            Label("Klasörü Sil", systemImage: "trash")
+                                        }
                                     }
                                 }
                             }

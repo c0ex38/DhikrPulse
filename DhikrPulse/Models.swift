@@ -10,6 +10,9 @@ struct DhikrItem: Identifiable, Codable, Hashable {
     var lastUpdated: Date
     var isArchived: Bool
     
+    // Optional category for classification
+    var categoryId: String?
+    
     // Custom CodingKeys are optional but good practice
     enum CodingKeys: String, CodingKey {
         case id
@@ -19,6 +22,7 @@ struct DhikrItem: Identifiable, Codable, Hashable {
         case createdAt
         case lastUpdated
         case isArchived
+        case categoryId
     }
 }
 
@@ -101,4 +105,16 @@ enum ZikirBackgroundType: String, CaseIterable, Identifiable {
         case .darkTexture: return "aqi.medium"
         }
     }
+}
+
+// MARK: - Category Model
+struct DhikrCategory: Identifiable, Codable, Hashable {
+    @DocumentID var id: String?
+    var name: String
+    var iconName: String
+    var colorHex: String
+    var createdAt: Date
+    
+    // Virtual "default/other" category ID for UI grouping
+    static let otherCategoryId = "other_category_id"
 }

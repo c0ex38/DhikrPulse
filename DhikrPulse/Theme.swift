@@ -4,14 +4,32 @@ import SwiftUI
 extension Color {
     // Colors extracted from the Stitch design screenshots
     
-    /// The deep dark green/black background (e.g. #0B1612)
-    static let themeBackground = Color(red: 0.04, green: 0.09, blue: 0.07)
+    // The deep dark green/black background (e.g. #0B1612)
+    static var themeBackground: Color {
+        if let hexString = UserDefaults.standard.string(forKey: "custom_background_hex"),
+           let customColor = Color(hex: hexString) {
+            return customColor
+        }
+        return Color(red: 0.04, green: 0.09, blue: 0.07)
+    }
     
-    /// The slightly lighter dark green card backgrounds
-    static let themeCard = Color(red: 0.08, green: 0.15, blue: 0.11)
+    // The slightly lighter dark green card backgrounds
+    static var themeCard: Color {
+        if let hexString = UserDefaults.standard.string(forKey: "custom_card_hex"),
+           let customColor = Color(hex: hexString) {
+            return customColor
+        }
+        return Color(red: 0.08, green: 0.15, blue: 0.11)
+    }
     
-    /// Secondary accent/text colors
-    static let themeSecondaryText = Color(red: 0.5, green: 0.6, blue: 0.55)
+    // Secondary accent/text colors
+    static var themeSecondaryText: Color {
+        if let hexString = UserDefaults.standard.string(forKey: "custom_text_hex"),
+           let customColor = Color(hex: hexString) {
+            return customColor
+        }
+        return Color(red: 0.5, green: 0.6, blue: 0.55)
+    }
     
     /// Dynamic Accent Color based on user's premium selection
     static var themeAccent: Color {
@@ -79,5 +97,19 @@ extension Color {
         
         let rgb: Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
         return String(format: "#%06x", rgb)
+    }
+}
+
+enum AppColorScheme: Int, CaseIterable {
+    case system = 0
+    case light = 1
+    case dark = 2
+    
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
     }
 }

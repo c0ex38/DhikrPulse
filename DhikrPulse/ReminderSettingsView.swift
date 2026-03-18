@@ -1,33 +1,39 @@
 import SwiftUI
 
+/// Hatırlatıcı saatini tutan basit yapı (JSON encode/decode için Codable)
+struct ReminderTime: Codable, Identifiable, Equatable {
+    var id: String { "\(hour)_\(minute)" }
+    var hour: Int
+    var minute: Int
+    
+    var displayString: String {
+        String(format: "%02d:%02d", hour, minute)
+    }
+}
+
 struct ReminderSettingsView: View {
     @StateObject private var notificationManager = NotificationManager.shared
     @AppStorage("daily_reminder_enabled") private var isReminderEnabled = false
-    @AppStorage("daily_reminder_hour") private var reminderHour = 20
-    @AppStorage("daily_reminder_minute") private var reminderMinute = 0
+    @AppStorage("reminder_times_json") private var reminderTimesJSON = "[]"
     
-    // Binding for DatePicker
-    private var reminderTime: Binding<Date> {
-        Binding<Date>(
-            get: {
-                let calendar = Calendar.current
-                var components = DateComponents()
-                components.hour = reminderHour
-                components.minute = reminderMinute
-                return calendar.date(from: components) ?? Date()
-            },
-            set: { newDate in
-                let calendar = Calendar.current
-                let components = calendar.dateComponents([.hour, .minute], from: newDate)
-                reminderHour = components.hour ?? 20
-                reminderMinute = components.minute ?? 0
-                
-                // Reschedule if enabled
-                if isReminderEnabled {
-                    scheduleReminder()
-                }
+    @State private var showingTimePicker = false
+    @State private var newReminderDate = Date()
+    
+    private var reminderTimes: [ReminderTime] {
+        get {
+            guard let data = reminderTimesJSON.data(using: .utf8),
+                  let times = try? JSONDecoder().decode([ReminderTime].self, from: data) else {
+                return []
             }
-        )
+            return times.sorted { ($0.hour * 60 + $0.minute) < ($1.hour * 60 + $1.minute) }
+        }
+    }
+    
+    private func saveReminderTimes(_ times: [ReminderTime]) {
+        if let data = try? JSONEncoder().encode(times),
+           let json = String(data: data, encoding: .utf8) {
+            reminderTimesJSON = json
+        }
     }
     
     var body: some View {
@@ -59,17 +65,28 @@ struct ReminderSettingsView: View {
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
+                // Bildirim İzni Reddedildi Uyarısı
+                if isReminderEnabled && !notificationManager.isAuthorized {
+                    permissionDeniedBanner
+                }
+                
                 // Toggle Switch
                 Toggle(isOn: Binding(
                     get: { isReminderEnabled },
                     set: { newValue in
                         isReminderEnabled = newValue
                         if newValue {
-                            // Check permission first
-                            notificationManager.requestAuthorization()
-                            scheduleReminder()
+                            notificationManager.requestAuthorization { granted in
+                                if granted {
+                                    // Eğer hiç hatırlatıcı yoksa varsayılan 20:00 ekle
+                                    if reminderTimes.isEmpty {
+                                        addReminder(hour: 20, minute: 0)
+                                    } else {
+                                        rescheduleAll()
+                                    }
+                                }
+                            }
                         } else {
-                            // Cancel all
                             notificationManager.cancelAllReminders()
                         }
                     }
@@ -77,19 +94,41 @@ struct ReminderSettingsView: View {
                     Text("Günlük Hatırlatıcı")
                         .foregroundColor(.white)
                 }
-                .tint(Color(red: 0.12, green: 0.84, blue: 0.45))
+                .tint(Color.themeAccent)
                 .padding(.horizontal)
                 
-                // Active State Content
-                if isReminderEnabled {
-                    VStack {
+                // Active State: Hatırlatıcı Saatleri Listesi
+                if isReminderEnabled && notificationManager.isAuthorized {
+                    VStack(spacing: 12) {
                         Divider().background(Color.white.opacity(0.1))
                         
-                        DatePicker("Hatırlatma Saati", selection: reminderTime, displayedComponents: .hourAndMinute)
-                            .datePickerStyle(.compact)
-                            .foregroundColor(.white)
+                        // Mevcut saatler
+                        if !reminderTimes.isEmpty {
+                            FlowLayout(spacing: 8) {
+                                ForEach(reminderTimes) { time in
+                                    reminderChip(time: time)
+                                }
+                            }
                             .padding(.horizontal)
-                            .padding(.vertical, 8)
+                        }
+                        
+                        // Yeni saat ekle butonu
+                        Button {
+                            showingTimePicker = true
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.body)
+                                Text("Saat Ekle")
+                                    .font(.subheadline.bold())
+                            }
+                            .foregroundColor(.themeAccent)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                            .background(Color.themeAccent.opacity(0.1))
+                            .cornerRadius(10)
+                        }
+                        .padding(.horizontal)
                     }
                 }
             }
@@ -104,26 +143,196 @@ struct ReminderSettingsView: View {
         .onAppear {
             notificationManager.checkAuthorizationStatus()
         }
+        .sheet(isPresented: $showingTimePicker) {
+            timePickerSheet
+        }
     }
     
-    private func scheduleReminder() {
-        notificationManager.cancelAllReminders() // Clear previous
-        
-        let messages = [
-            "Günün zikir hedefini tamamladın mı?",
-            "Kalpler ancak Allah'ı anmakla huzur bulur.",
-            "Biraz vakit ayırıp zikir çekmeye ne dersin?",
-            "Manevi huzur için DhikrPulse'a uğra."
-        ]
-        
-        let randomMessage = messages.randomElement() ?? messages[0]
-        
-        notificationManager.scheduleDailyReminder(
-            id: "daily_dhikr_reminder",
-            title: "DhikrPulse Vakti 🌙",
-            body: randomMessage,
-            hour: reminderHour,
-            minute: reminderMinute
+    // MARK: - Sub-views
+    
+    /// Bildirim izni reddedildiğinde gösterilecek uyarı kutusu
+    private var permissionDeniedBanner: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(.orange)
+                .font(.title3)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Bildirim İzni Gerekli")
+                    .font(.caption.bold())
+                    .foregroundColor(.white)
+                Text("Hatırlatıcılar için bildirim izni vermeniz gerekiyor.")
+                    .font(.caption2)
+                    .foregroundColor(.themeSecondaryText)
+            }
+            
+            Spacer()
+            
+            Button("Ayarlar") {
+                notificationManager.openSystemSettings()
+            }
+            .font(.caption.bold())
+            .foregroundColor(.themeBackground)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.orange)
+            .cornerRadius(8)
+        }
+        .padding(12)
+        .background(Color.orange.opacity(0.1))
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
+    
+    /// Hatırlatıcı saat chip'i (uzun basınca silme)
+    private func reminderChip(time: ReminderTime) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: "bell.fill")
+                .font(.caption2)
+            Text(time.displayString)
+                .font(.subheadline.bold())
+        }
+        .foregroundColor(.white)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(Color.themeAccent.opacity(0.2))
+        .cornerRadius(20)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.themeAccent.opacity(0.4), lineWidth: 1)
         )
+        .contextMenu {
+            Button(role: .destructive) {
+                removeReminder(time: time)
+            } label: {
+                Label("Sil", systemImage: "trash")
+            }
+        }
+    }
+    
+    /// Yeni saat seçmek için sheet
+    private var timePickerSheet: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                Text("Hatırlatma Saati Seçin")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                DatePicker("", selection: $newReminderDate, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
+                
+                Spacer()
+            }
+            .padding(.top, 24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.themeBackground.ignoresSafeArea())
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("İptal") {
+                        showingTimePicker = false
+                    }
+                    .foregroundColor(.themeSecondaryText)
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Ekle") {
+                        let calendar = Calendar.current
+                        let components = calendar.dateComponents([.hour, .minute], from: newReminderDate)
+                        let hour = components.hour ?? 20
+                        let minute = components.minute ?? 0
+                        addReminder(hour: hour, minute: minute)
+                        showingTimePicker = false
+                    }
+                    .foregroundColor(.themeAccent)
+                    .fontWeight(.bold)
+                }
+            }
+        }
+        .presentationDetents([.medium])
+        .presentationDragIndicator(.visible)
+    }
+    
+    // MARK: - Hatırlatıcı Yönetimi
+    
+    private func addReminder(hour: Int, minute: Int) {
+        var times = reminderTimes
+        let newTime = ReminderTime(hour: hour, minute: minute)
+        
+        // Aynı saat zaten varsa ekleme
+        guard !times.contains(where: { $0.hour == hour && $0.minute == minute }) else { return }
+        
+        times.append(newTime)
+        saveReminderTimes(times)
+        
+        // Bildirimi planla
+        notificationManager.scheduleRotatingReminders(
+            hour: hour,
+            minute: minute,
+            reminderId: "reminder_\(hour)_\(minute)"
+        )
+    }
+    
+    private func removeReminder(time: ReminderTime) {
+        var times = reminderTimes
+        times.removeAll { $0.id == time.id }
+        saveReminderTimes(times)
+        
+        // Bilirimi iptal et
+        notificationManager.cancelRemindersForId("reminder_\(time.hour)_\(time.minute)")
+    }
+    
+    private func rescheduleAll() {
+        notificationManager.cancelAllReminders()
+        for time in reminderTimes {
+            notificationManager.scheduleRotatingReminders(
+                hour: time.hour,
+                minute: time.minute,
+                reminderId: "reminder_\(time.hour)_\(time.minute)"
+            )
+        }
+    }
+}
+
+// MARK: - FlowLayout (Chip'ler için yatay akışlı layout)
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+    
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let result = arrangeSubviews(proposal: proposal, subviews: subviews)
+        return result.size
+    }
+    
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = arrangeSubviews(proposal: proposal, subviews: subviews)
+        for (index, position) in result.positions.enumerated() {
+            subviews[index].place(at: CGPoint(x: bounds.minX + position.x, y: bounds.minY + position.y), proposal: .unspecified)
+        }
+    }
+    
+    private func arrangeSubviews(proposal: ProposedViewSize, subviews: Subviews) -> (size: CGSize, positions: [CGPoint]) {
+        let maxWidth = proposal.width ?? .infinity
+        var positions: [CGPoint] = []
+        var currentX: CGFloat = 0
+        var currentY: CGFloat = 0
+        var lineHeight: CGFloat = 0
+        var maxX: CGFloat = 0
+        
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            
+            if currentX + size.width > maxWidth && currentX > 0 {
+                currentX = 0
+                currentY += lineHeight + spacing
+                lineHeight = 0
+            }
+            
+            positions.append(CGPoint(x: currentX, y: currentY))
+            lineHeight = max(lineHeight, size.height)
+            currentX += size.width + spacing
+            maxX = max(maxX, currentX)
+        }
+        
+        return (CGSize(width: maxX, height: currentY + lineHeight), positions)
     }
 }

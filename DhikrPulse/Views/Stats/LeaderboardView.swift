@@ -22,7 +22,7 @@ struct LeaderboardView: View {
                     .foregroundColor(.themeSecondaryText)
                     .multilineTextAlignment(.center)
                     .padding()
-                Button("Tekrar Dene") {
+                Button("try_again") {
                     viewModel.fetchTopUsers()
                 }
                 .padding()
@@ -32,7 +32,7 @@ struct LeaderboardView: View {
                 Spacer()
             } else if viewModel.topUsers.isEmpty {
                 Spacer()
-                Text("Henüz istatistik paylaşan kimse yok.")
+                Text("no_stats_yet")
                     .foregroundColor(.themeSecondaryText)
                 Spacer()
             } else {
@@ -86,13 +86,13 @@ struct LeaderboardRowView: View {
             .frame(width: 40)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(user.displayName ?? "İsimsiz Kullanıcı")
+                Text(user.displayName ?? String(localized: "anonymous_user"))
                     .font(.headline)
                     .foregroundColor(isCurrentUser ? .themeAccent : .themePrimaryText)
                     .lineLimit(1)
                 
                 if isCurrentUser {
-                    Text("Siz")
+                    Text("you_badge")
                         .font(.caption.bold())
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
@@ -114,7 +114,7 @@ struct LeaderboardRowView: View {
                         .font(.subheadline.bold())
                         .foregroundColor(.themePrimaryText)
                 }
-                Text("Max: \(user.maxStreak)")
+                Text("\(String(localized: "max_streak")): \(user.maxStreak)")
                     .font(.caption2)
                     .foregroundColor(.themeSecondaryText)
             }

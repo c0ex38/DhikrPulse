@@ -363,17 +363,28 @@ class DhikrViewModel: ObservableObject {
         Task {
             do {
                 // 1. Delete user from Firestore Leaderboard/Profile DB
-                try await db.collection("users").document(uid).delete()
+                try? await db.collection("users").document(uid).delete()
                 
                 // 2. Delete Auth context
-                // Notice: Since our app uses Anonymous Auth, deleting the user 
-                // will trigger the Auth listener which automatically logs the user back in 
-                // as a brand new anonymous user. This effectively acts as a full reset.
-                try await user.delete()
+                do {
+                    try await user.delete()
+                } catch let error as NSError {
+                    if error.domain == AuthErrorDomain {
+                        // Kullanıcı bulunamadıysa (17011) veya yeniden giriş gerekiyorsa (17014), oturumu kapat
+                        try? Auth.auth().signOut()
+                    } else {
+                        throw error
+                    }
+                }
+                
+                await MainActor.run {
+                    self.dhikrs.removeAll()
+                    self.userProfile = nil
+                }
                 
             } catch {
                 await MainActor.run {
-                    self.errorMessage = "Hesap silinirken bir hata oluştu: \(error.localizedDescription)"
+                    self.errorMessage = "\(String(localized: "error_title")): \(error.localizedDescription)"
                     self.showError = true
                 }
                 print("Failed to delete account: \(error)")

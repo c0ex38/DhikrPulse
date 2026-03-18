@@ -1,0 +1,132 @@
+/* Extras */
+"app_preferences" = "APP PREFERENCES";
+"haptic_feedback" = "Haptic Feedback";
+"haptic_desc" = "Light vibration on each count";
+"sound_effects" = "Sound Effects";
+"sound_desc" = "Play a light tap sound";
+"appearance_themes" = "Appearance & Themes";
+"appearance_desc" = "Background, colors and touch pad";
+"appearance" = "Appearance";
+"appearance_mode_desc" = "Switch between Light & Dark mode";
+"system_mode" = "System";
+"light_mode" = "Light";
+"dark_mode" = "Dark";
+"language" = "Language";
+"language_desc" = "Change the application language";
+"system_language" = "System Default";
+"pro_upgrade_title" = "Upgrade to DhikrPulse PRO";
+"pro_upgrade_desc" = "Unlimited dhikr, themes and more";
+
+"try_again" = "Try Again";
+"no_stats_yet" = "No one has shared stats yet.";
+"anonymous_user" = "Anonymous User";
+"you_badge" = "You";
+"max_streak" = "Max";
+
+/* Tabs */
+"tab_counter" = "Counter";
+"tab_qibla" = "Qibla";
+"tab_explore" = "Explore";
+"tab_library" = "Library";
+"tab_stats" = "Stats";
+"tab_settings" = "Settings";
+
+/* Main */
+"error_title" = "Error";
+"ok_button" = "OK";
+"unknown_error" = "An unknown error has occurred.";
+"cancel" = "Cancel";
+"save" = "Save";
+
+/* Counter */
+"no_active_dhikr" = "No Active Dhikr Found.";
+"add_ready_dhikrs" = "Add Ready Dhikrs";
+"select_dhikr" = "SELECT DHIKR";
+
+/* Esma Library */
+"esma_library_title" = "Asma-ul Husna Library";
+"search_esma" = "Search by name or meaning...";
+"target" = "Target";
+"add_button" = "Add";
+"remove_button" = "Remove";
+"in_my_folder" = "In Library";
+"premium_required" = "Premium Required";
+"library_full_msg" = "Your library is full! Upgrade to Premium to add unlimited dhikrs.";
+"open_store" = "Open Store";
+"give_up" = "Cancel";
+
+/* Leaderboard */
+"global_leaderboard" = "Global Leaderboard";
+"loading" = "Loading...";
+"not_found" = "Not Found";
+"rank" = "Rank";
+"user" = "User";
+"best" = "Best";
+"current" = "Current";
+
+/* Store */
+"store_title" = "DhikrPulse Store";
+"pro_store" = "PRO STORE";
+"pro_store_desc" = "Take your experience to the peak.";
+"no_ads" = "Completely Ad-Free";
+"no_ads_desc" = "Close ads forever without distraction.";
+"unlimited_dhikr" = "Unlimited Dhikr & Folders";
+"unlimited_dhikr_desc" = "Create as many dhikr targets and custom categories as you wish.";
+"special_themes" = "Special Themes & Textures";
+"special_themes_desc" = "Access premium design options that reflect the spirit of the app.";
+"advanced_stats" = "Advanced Statistics";
+"advanced_stats_desc" = "Access comprehensive historical reports.";
+"widgets" = "Home Screen Widgets";
+"widgets_desc" = "Coming Soon: Track progress from the home screen.";
+"premium_themes" = "Premium Themes";
+"haptic_pads" = "Haptic Pads";
+"open_preview" = "OPEN PREVIEW";
+"unlock_all" = "UNLOCK ALL";
+"restore_purchases" = "Restore Purchases";
+"pro_active" = "PRO Features Active";
+"previewing" = "PREVIEWING";
+"owned" = "OWNED";
+"pro_badge" = "PRO";
+"use_badge" = "USE";
+
+/* Settings & Links */
+"settings" = "Settings";
+"username" = "Username";
+"new_name" = "Your New Name";
+"set_new_name_desc" = "Set a new name to appear on your profile.";
+"delete_account_confirm" = "Are You Sure You Want to Delete Your Account?";
+"yes_delete_all" = "Yes, Delete All Data";
+"delete_warning" = "This action cannot be undone. Your dhikrs in the library, targets created, Premium purchase record, and Leaderboard score will be permanently reset.";
+"delete_account_btn" = "Delete Account and All Data";
+
+"about_section" = "ABOUT";
+"manage_subs" = "Manage Subscriptions";
+"manage_subs_desc" = "Manage your current subscription plans";
+"contact_us" = "Contact Us";
+"contact_us_desc" = "Get support or report a bug";
+"privacy_policy" = "Privacy Policy";
+"privacy_policy_desc" = "How we use your data";
+"terms_of_use" = "Terms of Use (EULA)";
+"terms_of_use_desc" = "Legal usage rights";
+"restore_purchases_desc" = "Recover your previous subscription";
+"rate_app" = "Rate the App";
+"rate_app_desc" = "Rate on the App Store";
+"recommend_friends" = "Recommend to Friends";
+"recommend_friends_desc" = "Share DhikrPulse";
+
+/* Esma Meanings (First 15) */
+"esma_mean_1" = "The one and only God, without equal, free from all imperfections.";
+"esma_mean_2" = "The One who shows mercy and compassion to all creation in this world.";
+"esma_mean_3" = "The One who grants infinite grace, favor, and bounty to believers in the Hereafter.";
+"esma_mean_4" = "The Owner of all domains, whose sovereignty and dominion are eternal.";
+"esma_mean_5" = "The One free from all shortcomings, possessing all attributes of perfection.";
+"esma_mean_6" = "The One who delivers His servants to peace and greets His blessed servants in paradise.";
+"esma_mean_7" = "The One who illuminates hearts with faith, granting security and peace to His creation.";
+"esma_mean_8" = "The One who oversees and protects all creatures.";
+"esma_mean_9" = "The Majestic, the Almighty who is victorious over all things.";
+"esma_mean_10" = "The Compeller, possessing majesty and power. Able to execute His will.";
+"esma_mean_11" = "The Supreme, without equal in greatness.";
+"esma_mean_12" = "The Creator who brings everything out of nothing into existence.";
+"esma_mean_13" = "The Evolver who creates everything flawlessly and harmoniously.";
+"esma_mean_14" = "The Fashioner who forms and designs all beings differently.";
+"esma_mean_15" = "The Great Forgiver who covers sins and forgives immensely.";

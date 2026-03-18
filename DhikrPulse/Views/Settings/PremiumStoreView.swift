@@ -52,12 +52,12 @@ struct PremiumStoreView: View {
                             
                             HStack {
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("PRO STORE")
+                                    Text("pro_store")
                                         .font(.system(size: 34, weight: .black, design: .rounded))
                                         .foregroundColor(.white)
                                         .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 3)
                                     
-                                    Text("Deneyiminizi zirveye taşıyın.")
+                                    Text("pro_store_desc")
                                         .font(.subheadline.bold())
                                         .foregroundColor(.white.opacity(0.9))
                                 }
@@ -81,11 +81,11 @@ struct PremiumStoreView: View {
                         // MARK: - Pro Avantajları
                         if !storeManager.isPro {
                             VStack(spacing: 12) {
-                                ProFeatureRow(icon: "nosign", title: "Tamamen Reklamsız", desc: "Zihniniz dağılmadan, reklamları sonsuza dek kapatın.", color: .red)
-                                ProFeatureRow(icon: "infinity", title: "Sınırsız Zikir & Klasör", desc: "Dilediğiniz kadar zikir hedefi ve özel kategori oluşturun.", color: .blue)
-                                ProFeatureRow(icon: "paintpalette.fill", title: "Özel Temalar & Dokular", desc: "Uygulamanın ruhunu yansıtan premium tasarım seçeneklerine erişin.", color: .purple)
-                                ProFeatureRow(icon: "chart.bar.xaxis", title: "İleri Düzey İstatistikler", desc: "Kapsamlı geçmiş raporlarına erişin.", color: .green)
-                                ProFeatureRow(icon: "rectangle.3.group", title: "Ana Ekran Araçları", desc: "Çok Yakında: Ana ekrandan (Widget) ilerlemeyi takip edin.", color: .orange)
+                                ProFeatureRow(icon: "nosign", title: String(localized: "no_ads"), desc: String(localized: "no_ads_desc"), color: .red)
+                                ProFeatureRow(icon: "infinity", title: String(localized: "unlimited_dhikr"), desc: String(localized: "unlimited_dhikr_desc"), color: .blue)
+                                ProFeatureRow(icon: "paintpalette.fill", title: String(localized: "special_themes"), desc: String(localized: "special_themes_desc"), color: .purple)
+                                ProFeatureRow(icon: "chart.bar.xaxis", title: String(localized: "advanced_stats"), desc: String(localized: "advanced_stats_desc"), color: .green)
+                                ProFeatureRow(icon: "rectangle.3.group", title: String(localized: "widgets"), desc: String(localized: "widgets_desc"), color: .orange)
                             }
                             .padding(.horizontal)
                         }
@@ -93,7 +93,7 @@ struct PremiumStoreView: View {
                         // MARK: - Özel Temalar Bölümü
                         VStack(alignment: .leading, spacing: 16) {
                             HStack {
-                                Text("Premium Temalar")
+                                Text("premium_themes")
                                     .font(.title2.bold())
                                     .foregroundColor(.white)
                                 Spacer()
@@ -124,7 +124,7 @@ struct PremiumStoreView: View {
                         // MARK: - Dokunma Alanları Bölümü
                         VStack(alignment: .leading, spacing: 16) {
                             HStack {
-                                Text("Dokunma Alanları (Haptic Pads)")
+                                Text("haptic_pads")
                                     .font(.title2.bold())
                                     .foregroundColor(.white)
                                 Spacer()
@@ -178,7 +178,7 @@ struct PremiumStoreView: View {
                                     }
                                 } label: {
                                         HStack {
-                                            Text(selectedTheme != originalTheme || touchpadStyle != originalTouchpad ? "ÖNİZLEMEYİ AÇ" : "TÜM KİLİTLERİ AÇ")
+                                            Text(selectedTheme != originalTheme || touchpadStyle != originalTouchpad ? "open_preview" : "unlock_all")
                                                 .font(.headline.bold())
                                             Spacer()
                                             Text(product.displayPrice)
@@ -199,7 +199,7 @@ struct PremiumStoreView: View {
                                 Button {
                                     storeManager.restorePurchases()
                                 } label: {
-                                    Text("Satın Almaları Geri Yükle")
+                                    Text("restore_purchases")
                                         .font(.caption2.bold())
                                         .foregroundColor(activeColor)
                                 }
@@ -219,7 +219,7 @@ struct PremiumStoreView: View {
                         HStack {
                             Image(systemName: "checkmark.seal.fill")
                                 .foregroundColor(.yellow)
-                            Text("PRO Özellikler Aktif")
+                            Text("pro_active")
                                 .font(.headline)
                                 .foregroundColor(.themePrimaryText)
                         }
@@ -233,7 +233,7 @@ struct PremiumStoreView: View {
                 }
                 .ignoresSafeArea(edges: .bottom)
             }
-            .navigationTitle("DhikrPulse Mağazası")
+            .navigationTitle("store_title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -304,7 +304,7 @@ struct StoreThemeCard: View {
                     .foregroundColor(isSelected ? .white : .themeSecondaryText)
                 
                 // Status Pill
-                Text(isSelected ? "ÖNİZLENİYOR" : (isFree || isPremium ? "SAHİPSİN" : "PRO"))
+                Text(isSelected ? "previewing" : (isFree || isPremium ? "owned" : "pro_badge"))
                     .font(.system(size: 10, weight: .bold))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
@@ -381,7 +381,7 @@ struct StoreTouchpadCard: View {
                 
                 // Status Pill
                 HStack {
-                    Text(isSelected ? "ÖNİZLENİYOR" : (isFree || isPremium ? "KULLAN" : "PRO"))
+                    Text(isSelected ? "previewing" : (isFree || isPremium ? "use_badge" : "pro_badge"))
                         .font(.system(size: 10, weight: .bold))
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)

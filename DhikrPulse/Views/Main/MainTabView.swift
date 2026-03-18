@@ -23,9 +23,9 @@ struct MainTabView: View {
                 } else {
                     // Fallback empty view when no items exist
                     VStack {
-                        Text("Aktif Zikir Bulunamadı.")
+                        Text("no_active_dhikr")
                             .foregroundColor(.white)
-                        Button("Hazır Zikirleri Ekle") {
+                        Button("add_ready_dhikrs") {
                             createDefaultDhikrs()
                         }
                         .padding()
@@ -39,7 +39,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Image(systemName: "timer")
-                Text("Sayaç")
+                Text("tab_counter")
             }
             .tag(0)
             
@@ -47,7 +47,7 @@ struct MainTabView: View {
             QiblaCompassView()
                 .tabItem {
                     Image(systemName: "location.north.line.fill")
-                    Text("Kıble")
+                    Text("tab_qibla")
                 }
             .tag(1)
             
@@ -55,7 +55,7 @@ struct MainTabView: View {
             EsmaLibraryView()
                 .tabItem {
                     Image(systemName: "book.pages.fill")
-                    Text("Keşfet")
+                    Text("tab_explore")
                 }
             .tag(2)
             
@@ -63,7 +63,7 @@ struct MainTabView: View {
             DhikrListView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: "list.dash")
-                    Text("Kütüphane")
+                    Text("tab_library")
                 }
             .tag(3)
             
@@ -71,7 +71,7 @@ struct MainTabView: View {
             InsightsStatsView()
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
-                    Text("İstatistikler")
+                    Text("tab_stats")
                 }
             .tag(4)
             
@@ -79,7 +79,7 @@ struct MainTabView: View {
             SettingsGoalsView()
                 .tabItem {
                     Image(systemName: "gearshape.fill")
-                    Text("Ayarlar")
+                    Text("tab_settings")
                 }
             .tag(5)
         }
@@ -91,12 +91,12 @@ struct MainTabView: View {
                 createDefaultDhikrs()
             }
         }
-        .alert("Hata", isPresented: $viewModel.showError) {
-            Button("Tamam", role: .cancel) {
+        .alert("error_title", isPresented: $viewModel.showError) {
+            Button("ok_button", role: .cancel) {
                 viewModel.errorMessage = nil
             }
         } message: {
-            Text(viewModel.errorMessage ?? "Bilinmeyen bir hata oluştu.")
+            Text(viewModel.errorMessage ?? String(localized: "unknown_error"))
         }
     }
     

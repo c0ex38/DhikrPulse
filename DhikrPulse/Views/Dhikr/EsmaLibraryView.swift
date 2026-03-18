@@ -38,9 +38,9 @@ struct EsmaLibraryView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Esma-ül Hüsna")
+            .navigationTitle("esma_library_title")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "İsim veya anlam ara...")
+            .searchable(text: $searchText, prompt: String(localized: "search_esma"))
             .sheet(isPresented: $showingPremiumSheet) {
                 PremiumStoreView()
             }
@@ -67,7 +67,7 @@ struct EsmaCardView: View {
                         .font(.headline)
                         .foregroundColor(.themePrimaryText)
                     Spacer()
-                    Text("Hedef: \(esma.targetCount)")
+                    Text("\(String(localized: "target")): \(esma.targetCount)")
                         .font(.caption2)
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)

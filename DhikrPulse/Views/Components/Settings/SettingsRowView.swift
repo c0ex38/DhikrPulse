@@ -7,8 +7,8 @@ enum SettingsTrailingStyle {
 struct SettingsRowView: View {
     var icon: String
     var iconColor: Color
-    var title: String
-    var subtitle: String
+    var title: LocalizedStringKey
+    var subtitle: LocalizedStringKey
     var trailing: SettingsTrailingStyle
     
     var body: some View {

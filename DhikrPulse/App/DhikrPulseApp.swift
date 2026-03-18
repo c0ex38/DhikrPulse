@@ -21,6 +21,7 @@ struct DhikrPulseApp: App {
     
     @AppStorage("has_seen_onboarding") private var hasSeenOnboarding = false
     @AppStorage("app_color_scheme") private var schemeType: Int = 0
+    @AppStorage("app_lang") private var appLang: String = ""
     
     var body: some Scene {
         WindowGroup {
@@ -44,6 +45,7 @@ struct DhikrPulseApp: App {
                 }
             }
             .preferredColorScheme(AppColorScheme(rawValue: schemeType)?.colorScheme)
+            .environment(\.locale, appLang.isEmpty ? .current : Locale(identifier: appLang))
         }
     }
 }

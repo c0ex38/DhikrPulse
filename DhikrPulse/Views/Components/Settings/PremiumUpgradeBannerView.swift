@@ -27,10 +27,10 @@ struct PremiumUpgradeBannerView: View {
                         }
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("DhikrPulse PRO'ya Geçin")
+                            Text("pro_upgrade_title")
                                 .font(.headline)
                                 .foregroundColor(.themePrimaryText)
-                            Text("Sınırsız zikir, temalar, ısı haritası ve daha fazlası")
+                            Text("pro_upgrade_desc")
                                 .font(.caption)
                                 .foregroundColor(.themeSecondaryText)
                                 .lineLimit(1)
@@ -69,8 +69,8 @@ struct PremiumUpgradeBannerView: View {
                     SettingsRowView(
                         icon: "creditcard.fill",
                         iconColor: .themeAccent,
-                        title: "Aboneliği Yönet",
-                        subtitle: "İptal, değiştirme veya yenileme",
+                        title: "manage_subs",
+                        subtitle: "manage_subs_desc",
                         trailing: .externalLink
                     )
                 }

@@ -4,18 +4,19 @@ struct AppPreferencesSectionView: View {
     @AppStorage("haptic_enabled") private var hapticEnabled: Bool = true
     @AppStorage("sound_enabled") private var soundEnabled: Bool = false
     @AppStorage("app_color_scheme") private var schemeType: Int = 0
+    @AppStorage("app_lang") private var appLang: String = ""
     
     @Binding var showingCustomizationHub: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            SectionHeader(icon: "slider.horizontal.3", title: "UYGULAMA TERCİHLERİ")
+            SectionHeader(icon: "slider.horizontal.3", title: "app_preferences")
             
             VStack(spacing: 0) {
                 PreferenceRow(
                     icon: "iphone.radiowaves.left.and.right",
-                    title: "Titreşim (Haptic)",
-                    subtitle: "Her sayımda hafif titreşim",
+                    title: String(localized: "haptic_feedback"),
+                    subtitle: String(localized: "haptic_desc"),
                     isOn: $hapticEnabled
                 )
                 
@@ -25,8 +26,8 @@ struct AppPreferencesSectionView: View {
                 
                 PreferenceRow(
                     icon: "speaker.wave.2.fill",
-                    title: "Ses Efektleri",
-                    subtitle: "Hafif bir tıklama sesi oynat",
+                    title: String(localized: "sound_effects"),
+                    subtitle: String(localized: "sound_desc"),
                     isOn: $soundEnabled
                 )
                 
@@ -38,11 +39,41 @@ struct AppPreferencesSectionView: View {
                     SettingsRowView(
                         icon: "paintpalette.fill",
                         iconColor: .purple,
-                        title: "Görünüm & Temalar",
-                        subtitle: "Arka plan, renkler ve dokunma alanı",
+                        title: "appearance_themes",
+                        subtitle: "appearance_desc",
                         trailing: .chevron
                     )
                 }
+                
+                Divider()
+                    .background(Color.themeSecondaryText.opacity(0.2))
+                    .padding(.leading, 60)
+                
+                // Language Selection
+                HStack {
+                    IconBox(icon: "globe")
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("language")
+                            .foregroundColor(.themePrimaryText)
+                            .font(.body)
+                        Text("language_desc")
+                            .foregroundColor(.themeSecondaryText)
+                            .font(.caption)
+                    }
+                    
+                    Spacer()
+                    
+                    Picker("Language", selection: $appLang) {
+                        Text("system_language").tag("")
+                        Text("Türkçe").tag("tr")
+                        Text("English").tag("en")
+                        Text("العربية").tag("ar")
+                    }
+                    .tint(.themeSecondaryText)
+                }
+                .padding(.vertical, 12)
+                .padding(.leading, 12)
                 
                 Divider()
                     .background(Color.themeSecondaryText.opacity(0.2))
@@ -53,10 +84,10 @@ struct AppPreferencesSectionView: View {
                     IconBox(icon: "moon.fill")
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Görünüm")
+                        Text("appearance")
                             .foregroundColor(.themePrimaryText)
                             .font(.body)
-                        Text("Açık & Koyu mod arası geçiş")
+                        Text("appearance_mode_desc")
                             .foregroundColor(.themeSecondaryText)
                             .font(.caption)
                     }
@@ -65,7 +96,7 @@ struct AppPreferencesSectionView: View {
                     
                     HStack(spacing: 0) {
                         Button(action: { schemeType = 0 }) {
-                            Text("Sistem")
+                            Text("system_mode")
                                 .font(.caption.bold())
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 8)
@@ -73,7 +104,7 @@ struct AppPreferencesSectionView: View {
                                 .foregroundColor(schemeType == 0 ? Color.themeBackground : .themeSecondaryText)
                         }
                         Button(action: { schemeType = 1 }) {
-                            Text("Açık")
+                            Text("light_mode")
                                 .font(.caption.bold())
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 8)
@@ -81,7 +112,7 @@ struct AppPreferencesSectionView: View {
                                 .foregroundColor(schemeType == 1 ? Color.themeBackground : .themeSecondaryText)
                         }
                         Button(action: { schemeType = 2 }) {
-                            Text("Koyu")
+                            Text("dark_mode")
                                 .font(.caption.bold())
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 8)

@@ -1,0 +1,132 @@
+/* Extras */
+"app_preferences" = "UYGULAMA TERCİHLERİ";
+"haptic_feedback" = "Titreşim (Haptic)";
+"haptic_desc" = "Her sayımda hafif titreşim";
+"sound_effects" = "Ses Efektleri";
+"sound_desc" = "Hafif bir tıklama sesi oynat";
+"appearance_themes" = "Görünüm & Temalar";
+"appearance_desc" = "Arka plan, renkler ve dokunma alanı";
+"appearance" = "Görünüm";
+"appearance_mode_desc" = "Açık & Koyu mod arası geçiş";
+"system_mode" = "Sistem";
+"light_mode" = "Açık";
+"dark_mode" = "Koyu";
+"language" = "Dil";
+"language_desc" = "Uygulama dilini değiştirin";
+"system_language" = "Sistem Varsayılanı";
+"pro_upgrade_title" = "DhikrPulse PRO'ya Geçin";
+"pro_upgrade_desc" = "Sınırsız zikir, temalar ve daha fazlası";
+
+"try_again" = "Tekrar Dene";
+"no_stats_yet" = "Henüz istatistik paylaşan kimse yok.";
+"anonymous_user" = "İsimsiz Kullanıcı";
+"you_badge" = "Siz";
+"max_streak" = "Max";
+
+/* Tabs */
+"tab_counter" = "Sayaç";
+"tab_qibla" = "Kıble";
+"tab_explore" = "Keşfet";
+"tab_library" = "Kütüphane";
+"tab_stats" = "İstatistikler";
+"tab_settings" = "Ayarlar";
+
+/* Main */
+"error_title" = "Hata";
+"ok_button" = "Tamam";
+"unknown_error" = "Bilinmeyen bir hata oluştu.";
+"cancel" = "İptal";
+"save" = "Kaydet";
+
+/* Counter */
+"no_active_dhikr" = "Aktif Zikir Bulunamadı.";
+"add_ready_dhikrs" = "Hazır Zikirleri Ekle";
+"select_dhikr" = "ZİKİR SEÇİN";
+
+/* Esma Library */
+"esma_library_title" = "Esmaül Hüsna Kütüphanesi";
+"search_esma" = "İsim veya anlama göre ara...";
+"target" = "Hedef";
+"add_button" = "Ekle";
+"remove_button" = "Kaldır";
+"in_my_folder" = "Klasörümde";
+"premium_required" = "Premium Gerekli";
+"library_full_msg" = "Kütüphanen dolu! Sınırsız zikir eklemek için Premium'a geç.";
+"open_store" = "Mağazayı Aç";
+"give_up" = "Vazgeç";
+
+/* Leaderboard */
+"global_leaderboard" = "Küresel Liderlik Tablosu";
+"loading" = "Yükleniyor...";
+"not_found" = "Bulunamadı";
+"rank" = "Sıra";
+"user" = "Kullanıcı";
+"best" = "En İyi";
+"current" = "Mevcut";
+
+/* Store */
+"store_title" = "DhikrPulse Mağazası";
+"pro_store" = "PRO STORE";
+"pro_store_desc" = "Deneyiminizi zirveye taşıyın.";
+"no_ads" = "Tamamen Reklamsız";
+"no_ads_desc" = "Zihniniz dağılmadan, reklamları sonsuza dek kapatın.";
+"unlimited_dhikr" = "Sınırsız Zikir & Klasör";
+"unlimited_dhikr_desc" = "Dilediğiniz kadar zikir hedefi ve özel kategori oluşturun.";
+"special_themes" = "Özel Temalar & Dokular";
+"special_themes_desc" = "Uygulamanın ruhunu yansıtan premium tasarım seçeneklerine erişin.";
+"advanced_stats" = "İleri Düzey İstatistikler";
+"advanced_stats_desc" = "Kapsamlı geçmiş raporlarına erişin.";
+"widgets" = "Ana Ekran Araçları";
+"widgets_desc" = "Çok Yakında: Ana ekrandan (Widget) ilerlemeyi takip edin.";
+"premium_themes" = "Premium Temalar";
+"haptic_pads" = "Dokunma Alanları (Haptic Pads)";
+"open_preview" = "ÖNİZLEMEYİ AÇ";
+"unlock_all" = "TÜM KİLİTLERİ AÇ";
+"restore_purchases" = "Satın Almaları Geri Yükle";
+"pro_active" = "PRO Özellikler Aktif";
+"previewing" = "ÖNİZLENİYOR";
+"owned" = "SAHİPSİN";
+"pro_badge" = "PRO";
+"use_badge" = "KULLAN";
+
+/* Settings & Links */
+"settings" = "Ayarlar";
+"username" = "Kullanıcı Adı";
+"new_name" = "Yeni Adınız";
+"set_new_name_desc" = "Profilinizde görünecek yeni bir ad belirleyin.";
+"delete_account_confirm" = "Hesabınızı Silmek İstediğinize Emin Misiniz?";
+"yes_delete_all" = "Evet, Tüm Verileri Sil";
+"delete_warning" = "Bu işlem geri alınamaz. Kütüphanedeki zikirleriniz, oluşturduğunuz hedefler, Premium satın alım kaydınız ve Liderlik Tablosundaki skorunuz kalıcı olarak sıfırlanacaktır.";
+"delete_account_btn" = "Hesabı ve Tüm Verileri Sil";
+
+"about_section" = "HAKKINDA";
+"manage_subs" = "Abonelikleri Yönet";
+"manage_subs_desc" = "Mevcut abonelik planlarınızı düzenleyin";
+"contact_us" = "Bize Ulaşın";
+"contact_us_desc" = "Destek alın veya hata bildirin";
+"privacy_policy" = "Gizlilik Politikası";
+"privacy_policy_desc" = "Verilerinizi nasıl kullandığımız";
+"terms_of_use" = "Kullanım Koşulları (EULA)";
+"terms_of_use_desc" = "Yasal kullanım hakları";
+"restore_purchases_desc" = "Önceki aboneliğinizi kurtarın";
+"rate_app" = "Uygulamayı Değerlendirin";
+"rate_app_desc" = "App Store'da puanlayın";
+"recommend_friends" = "Arkadaşlarına Öner";
+"recommend_friends_desc" = "DhikrPulse'ı paylaşın";
+
+/* Esma Meanings (First 15) */
+"esma_mean_1" = "Eşi benzeri olmayan, bütün noksan sıfatlardan münezzeh tek ilah.";
+"esma_mean_2" = "Dünyada bütün mahlukata merhamet eden, şefkat gösteren.";
+"esma_mean_3" = "Ahirette, müminlere sonsuz ikram, lütuf ve ihsanda bulunan.";
+"esma_mean_4" = "Mülkün, kainatın sahibi, mülk ve saltanatı devamlı olan.";
+"esma_mean_5" = "Her türlü eksiklikten uzak, bütün kemal sıfatları kendinde toplayan.";
+"esma_mean_6" = "Kullarını selamete çıkaran, cennette bahtiyar kullarına selam eden.";
+"esma_mean_7" = "Kalplere iman nuru veren, yaratıklarına güven ve huzur bağışlayan.";
+"esma_mean_8" = "Bütün yaratıkları gözetip koruyan.";
+"esma_mean_9" = "İzzet sahibi, her şeye galip olan.";
+"esma_mean_10" = "Azamet ve kudret sahibi. Dilediğini yapmaya muktedir olan.";
+"esma_mean_11" = "Büyüklükte eşi ve benzeri olmayan.";
+"esma_mean_12" = "Yoktan var eden, yaratan.";
+"esma_mean_13" = "Her şeyi kusursuz ve uyumlu yaratan.";
+"esma_mean_14" = "Varlıklara şekil veren ve onları birbirinden farklı özellikte yaratan.";
+"esma_mean_15" = "Günahları örten ve çok mağfiret eden.";

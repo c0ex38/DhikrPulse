@@ -5,7 +5,7 @@ struct AboutLinksSectionView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            SectionHeader(icon: "info.circle", title: "HAKKINDA")
+            SectionHeader(icon: "info.circle", title: "about_section")
             
             VStack(spacing: 0) {
                 Button {
@@ -14,8 +14,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "arrow.clockwise",
                         iconColor: .blue,
-                        title: "Satın Almaları Geri Yükle",
-                        subtitle: "Önceki aboneliğinizi kurtarın",
+                        title: "restore_purchases",
+                        subtitle: "restore_purchases_desc",
                         trailing: .chevron
                     )
                 }
@@ -33,8 +33,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "star.fill",
                         iconColor: .yellow,
-                        title: "Uygulamayı Değerlendirin",
-                        subtitle: "App Store'da puanlayın",
+                        title: "rate_app",
+                        subtitle: "rate_app_desc",
                         trailing: .externalLink
                     )
                 }
@@ -49,8 +49,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "square.and.arrow.up",
                         iconColor: .green,
-                        title: "Arkadaşlarına Öner",
-                        subtitle: "DhikrPulse'ı paylaşın",
+                        title: "recommend_friends",
+                        subtitle: "recommend_friends_desc",
                         trailing: .chevron
                     )
                 }
@@ -67,8 +67,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "creditcard.fill",
                         iconColor: .orange,
-                        title: "Abonelikleri Yönet",
-                        subtitle: "Mevcut abonelik planlarınızı düzenleyin",
+                        title: "manage_subs",
+                        subtitle: "manage_subs_desc",
                         trailing: .externalLink
                     )
                 }
@@ -85,8 +85,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "envelope.fill",
                         iconColor: .teal,
-                        title: "Bize Ulaşın",
-                        subtitle: "Destek alın veya hata bildirin",
+                        title: "contact_us",
+                        subtitle: "contact_us_desc",
                         trailing: .externalLink
                     )
                 }
@@ -103,8 +103,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "hand.raised.fill",
                         iconColor: .purple,
-                        title: "Gizlilik Politikası",
-                        subtitle: "Verilerinizi nasıl kullandığımız",
+                        title: "privacy_policy",
+                        subtitle: "privacy_policy_desc",
                         trailing: .externalLink
                     )
                 }
@@ -122,8 +122,8 @@ struct AboutLinksSectionView: View {
                     SettingsRowView(
                         icon: "doc.text.fill",
                         iconColor: .gray,
-                        title: "Kullanım Koşulları (EULA)",
-                        subtitle: "Yasal kullanım hakları",
+                        title: "terms_of_use",
+                        subtitle: "terms_of_use_desc",
                         trailing: .externalLink
                     )
                 }

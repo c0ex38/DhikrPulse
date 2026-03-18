@@ -44,7 +44,7 @@ struct SettingsGoalsView: View {
                             Button(role: .destructive) {
                                 showingDeleteAccountAlert = true
                             } label: {
-                                Text("Hesabı ve Tüm Verileri Sil")
+                                Text("delete_account_btn")
                                     .font(.headline)
                                     .foregroundColor(.red)
                                     .frame(maxWidth: .infinity)
@@ -69,24 +69,24 @@ struct SettingsGoalsView: View {
                 CustomizationHubView()
                     .environmentObject(storeManager)
             }
-            .alert("Kullanıcı Adı", isPresented: $showingNameEditAlert) {
-                TextField("Yeni Adınız", text: $editedName)
-                Button("İptal", role: .cancel) { }
-                Button("Kaydet") {
+            .alert("new_name", isPresented: $showingNameEditAlert) {
+                TextField("new_name", text: $editedName)
+                Button("cancel", role: .cancel) { }
+                Button("save") {
                     viewModel.updateDisplayName(to: editedName)
                 }
             } message: {
-                Text("Profilinizde görünecek yeni bir ad belirleyin.")
+                Text("set_new_name_desc")
             }
-            .alert("Hesabınızı Silmek İstediğinize Emin Misiniz?", isPresented: $showingDeleteAccountAlert) {
-                Button("İptal", role: .cancel) { }
-                Button("Evet, Tüm Verileri Sil", role: .destructive) {
+            .alert("delete_account_confirm", isPresented: $showingDeleteAccountAlert) {
+                Button("cancel", role: .cancel) { }
+                Button("yes_delete_all", role: .destructive) {
                     viewModel.deleteAccount()
                 }
             } message: {
-                Text("Bu işlem geri alınamaz. Kütüphanedeki zikirleriniz, oluşturduğunuz hedefler, Premium satın alım kaydınız ve Liderlik Tablosundaki skorunuz kalıcı olarak sıfırlanacaktır.")
+                Text("delete_warning")
             }
-            .navigationTitle("Ayarlar")
+            .navigationTitle("settings")
             .navigationBarTitleDisplayMode(.inline)
         }
     }

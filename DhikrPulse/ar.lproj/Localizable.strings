@@ -1,0 +1,132 @@
+/* Extras */
+"app_preferences" = "تفضيلات التطبيق";
+"haptic_feedback" = "ردود الفعل اللمسية (الاهتزاز)";
+"haptic_desc" = "اهتزاز خفيف عند كل عديّة";
+"sound_effects" = "مؤثرات صوتية";
+"sound_desc" = "تشغيل صوت نقر خفيف";
+"appearance_themes" = "المظهر والسمات";
+"appearance_desc" = "الخلفية والألوان ولوحة اللمس";
+"appearance" = "المظهر";
+"appearance_mode_desc" = "التبديل بين الوضعين الفاتح والداكن";
+"system_mode" = "النظام";
+"light_mode" = "فاتح";
+"dark_mode" = "داكن";
+"language" = "اللغة";
+"language_desc" = "تغيير لغة التطبيق";
+"system_language" = "الافتراضي للنظام";
+"pro_upgrade_title" = "الترقية إلى DhikrPulse PRO";
+"pro_upgrade_desc" = "أذكار لا محدودة، سمات والمزيد";
+
+"try_again" = "حاول مرة أخرى";
+"no_stats_yet" = "لم يقم أحد بمشاركة الإحصائيات بعد.";
+"anonymous_user" = "مستخدم مجهول";
+"you_badge" = "أنت";
+"max_streak" = "الأقصى";
+
+/* Tabs */
+"tab_counter" = "السبحة";
+"tab_qibla" = "القبلة";
+"tab_explore" = "استكشف";
+"tab_library" = "المكتبة";
+"tab_stats" = "الإحصائيات";
+"tab_settings" = "الإعدادات";
+
+/* Main */
+"error_title" = "خطأ";
+"ok_button" = "حسناً";
+"unknown_error" = "حدث خطأ غير معروف.";
+"cancel" = "إلغاء";
+"save" = "حفظ";
+
+/* Counter */
+"no_active_dhikr" = "لا يوجد ذكر نشط.";
+"add_ready_dhikrs" = "أضف الأذكار الجاهزة";
+"select_dhikr" = "اختر الذكر";
+
+/* Esma Library */
+"esma_library_title" = "مكتبة أسماء الله الحسنى";
+"search_esma" = "بحث بالاسم أو المعنى...";
+"target" = "الهدف";
+"add_button" = "إضافة";
+"remove_button" = "إزالة";
+"in_my_folder" = "في مكتبتي";
+"premium_required" = "النسخة المميزة مطلوبة";
+"library_full_msg" = "مكتبتك ممتلئة! يرجى الترقية إلى النسخة المميزة لإضافة عدد لا محدود من الأذكار.";
+"open_store" = "افتح المتجر";
+"give_up" = "تراجع";
+
+/* Leaderboard */
+"global_leaderboard" = "لوحة المتصدرين العالمية";
+"loading" = "جاري التحميل...";
+"not_found" = "لم يتم العثور عليه";
+"rank" = "المركز";
+"user" = "المستخدم";
+"best" = "الأفضل";
+"current" = "الحالي";
+
+/* Store */
+"store_title" = "متجر DhikrPulse";
+"pro_store" = "المتجر المميز";
+"pro_store_desc" = "ارتقِ بتجربتك إلى القمة.";
+"no_ads" = "بدون إعلانات تماماً";
+"no_ads_desc" = "أغلق الإعلانات إلى الأبد بدون تشتيت.";
+"unlimited_dhikr" = "أذكار ومجلدات غير محدودة";
+"unlimited_dhikr_desc" = "أنشئ عدد لا محدود من الأهداف والفئات المخصصة.";
+"special_themes" = "سمات وخلفيات خاصة";
+"special_themes_desc" = "احصل على خيارات تصميم مميزة تعكس روح التطبيق.";
+"advanced_stats" = "إحصائيات متقدمة";
+"advanced_stats_desc" = "الوصول إلى تقارير تاريخية شاملة.";
+"widgets" = "أدوات الشاشة الرئيسية";
+"widgets_desc" = "قريباً: تتبع تقدمك من الشاشة الرئيسية.";
+"premium_themes" = "سمات مميزة";
+"haptic_pads" = "منصات اللمس";
+"open_preview" = "الفتح للمعاينة";
+"unlock_all" = "فتح كل شيء";
+"restore_purchases" = "استعادة المشتريات";
+"pro_active" = "الميزات المميزة مفعلة";
+"previewing" = "جاري المعاينة";
+"owned" = "مملوك";
+"pro_badge" = "مميز";
+"use_badge" = "استخدم";
+
+/* Settings & Links */
+"settings" = "الإعدادات";
+"username" = "اسم المستخدم";
+"new_name" = "الاسم الجديد";
+"set_new_name_desc" = "عيّن اسماً جديداً ليظهر في ملفك الشخصي.";
+"delete_account_confirm" = "هل أنت متأكد من حذف الحساب؟";
+"yes_delete_all" = "نعم، احذف جميع البيانات";
+"delete_warning" = "لا يمكن التراجع عن هذا الإجراء. سيتم إعادة تعيين أذكارك في المكتبة، والأهداف المنشأة، وسجل الشراء المميز، ونقاطك في لوحة المتصدرين للأبد.";
+"delete_account_btn" = "حذف الحساب وجميع البيانات";
+
+"about_section" = "حول";
+"manage_subs" = "إدارة الاشتراكات";
+"manage_subs_desc" = "إدارة خطط الاشتراك الحالية";
+"contact_us" = "اتصل بنا";
+"contact_us_desc" = "احصل على الدعم أو أبلغ عن خطأ";
+"privacy_policy" = "سياسة الخصوصية";
+"privacy_policy_desc" = "كيفية استخدام بياناتك";
+"terms_of_use" = "شروط الاستخدام";
+"terms_of_use_desc" = "حقوق الاستخدام القانونية";
+"restore_purchases_desc" = "استعادة اشتراكك السابق";
+"rate_app" = "تقييم التطبيق";
+"rate_app_desc" = "قيمنا على App Store";
+"recommend_friends" = "رشحه لأصدقائك";
+"recommend_friends_desc" = "شارك تطبيق DhikrPulse";
+
+/* Esma Meanings (First 15) */
+"esma_mean_1" = "الإله الواحد الأحد، الذي ليس كمثله شيء، المنزه عن كل نقص.";
+"esma_mean_2" = "ذو الرحمة الواسعة التي شملت جميع المخلوقات في الدنيا.";
+"esma_mean_3" = "ذو الرحمة الخاصة بالمؤمنين في الآخرة.";
+"esma_mean_4" = "المالك الحقيقي لكل شيء، وصاحب الملك المطلق المستمر.";
+"esma_mean_5" = "المنزه عن كل نقص، الجامع لكل صفات الكمال.";
+"esma_mean_6" = "الذي يسلم عباده، ومانح السلام للمؤمنين في الجنة.";
+"esma_mean_7" = "الذي يزرع الطمأنينة والأمان في قلوب العباد.";
+"esma_mean_8" = "الرقيب الحافظ والمهيمن على جميع خلقه.";
+"esma_mean_9" = "ذو العزة الغالب الذي لا يُقهر.";
+"esma_mean_10" = "القوي العظيم الذي ينفذ مشيئته ويجبر الكسر.";
+"esma_mean_11" = "المتفرد بالعظمة والكبرياء.";
+"esma_mean_12" = "موجد الأشياء من العدم إلى الوجود.";
+"esma_mean_13" = "الذي يخلق من العدم بتناسق وإتقان.";
+"esma_mean_14" = "الذي يصور الكائنات ويعطي لكل منها شكلاً خاصاً.";
+"esma_mean_15" = "الذي يغفر الذنوب ويستر العيوب مرة بعد مرة.";

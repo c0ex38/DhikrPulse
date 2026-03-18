@@ -71,7 +71,7 @@ struct CounterView: View {
                     } label: {
                         VStack(spacing: 4) {
                             HStack(spacing: 4) {
-                                Text(dhikrItem?.name.uppercased() ?? String(localized: "select_dhikr"))
+                                Text(dhikrItem?.name.uppercased() ?? "select_dhikr")
                                     .font(.system(size: 16, weight: .bold, design: .default))
                                     .foregroundColor(.themePrimaryText)
                                     .tracking(2)
@@ -108,7 +108,7 @@ struct CounterView: View {
                         .contentTransition(.numericText())
                         .animation(.snappy, value: dhikrItem?.currentCount)
                     
-                    Text("\(String(localized: "target").uppercased()): \(dhikrItem?.targetCount ?? 0)")
+                    Text("\("target".uppercased()): \(dhikrItem?.targetCount ?? 0)")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.themeSecondaryText)
                         .tracking(1)

@@ -384,7 +384,7 @@ class DhikrViewModel: ObservableObject {
                 
             } catch {
                 await MainActor.run {
-                    self.errorMessage = "\(String(localized: "error_title")): \(error.localizedDescription)"
+                    self.errorMessage = "\("error_title"): \(error.localizedDescription)"
                     self.showError = true
                 }
                 print("Failed to delete account: \(error)")

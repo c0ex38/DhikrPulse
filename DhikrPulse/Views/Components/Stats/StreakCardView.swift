@@ -22,7 +22,7 @@ struct StreakCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Mevcut Seri (Streak)")
+            Text("stats_current_streak")
                 .font(.headline)
                 .foregroundColor(.themePrimaryText)
             
@@ -47,11 +47,11 @@ struct StreakCardView: View {
                         .foregroundColor(.themePrimaryText)
                     
                     if currentStreak > 0 {
-                        Text("Sonraki başarım (\(nextMilestone) gün) için \(nextMilestone - currentStreak) gün kaldı")
+                        Text(String(format: "stats_next_milestone", "\(nextMilestone)", "\(nextMilestone - currentStreak)"))
                             .font(.caption)
                             .foregroundColor(.themeSecondaryText)
                     } else {
-                        Text("Bugün başla ve serini oluştur!")
+                        Text("stats_streak_start")
                             .font(.caption)
                             .foregroundColor(.themeSecondaryText)
                     }

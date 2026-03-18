@@ -40,7 +40,7 @@ struct SplashView: View {
                         .font(.system(size: 32, weight: .bold, design: .rounded))
                         .foregroundColor(.themePrimaryText)
                     
-                    Text("Kalbinizi ritimde tutun")
+                    Text("splash_subtitle")
                         .font(.caption)
                         .foregroundColor(.themeSecondaryText)
                         .italic()

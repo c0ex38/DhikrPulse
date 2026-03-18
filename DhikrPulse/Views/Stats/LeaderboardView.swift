@@ -86,7 +86,7 @@ struct LeaderboardRowView: View {
             .frame(width: 40)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(user.displayName ?? String(localized: "anonymous_user"))
+                Text(user.displayName ?? "anonymous_user")
                     .font(.headline)
                     .foregroundColor(isCurrentUser ? .themeAccent : .themePrimaryText)
                     .lineLimit(1)
@@ -114,7 +114,7 @@ struct LeaderboardRowView: View {
                         .font(.subheadline.bold())
                         .foregroundColor(.themePrimaryText)
                 }
-                Text("\(String(localized: "max_streak")): \(user.maxStreak)")
+                Text("\("max_streak"): \(user.maxStreak)")
                     .font(.caption2)
                     .foregroundColor(.themeSecondaryText)
             }

@@ -48,7 +48,7 @@ struct IconBox: View {
 // DhikrListView, SettingsGoalsView ve InsightsStatsView'da tekrar eden yapı
 struct SectionHeader: View {
     let icon: String
-    let title: String
+    let title: LocalizedStringKey
     var iconColor: Color = .themeAccent
     var trailing: String? = nil
     var trailingAction: (() -> Void)? = nil
@@ -171,8 +171,8 @@ extension View {
 // SettingsGoalsView'dan buraya taşındı — Toggle ile birlikte bir ayar satırı
 struct PreferenceRow: View {
     let icon: String
-    let title: String
-    let subtitle: String
+    let title: LocalizedStringKey
+    let subtitle: LocalizedStringKey
     @Binding var isOn: Bool
     
     var body: some View {

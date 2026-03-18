@@ -12,7 +12,7 @@ struct RecentDhikrsListView: View {
             ) { }
             
             if viewModel.dhikrs.isEmpty {
-                Text("Henüz zikir eklenmemiş")
+                Text("stats_no_recent_dhikr")
                     .font(.subheadline)
                     .foregroundColor(.themeSecondaryText)
                     .padding()

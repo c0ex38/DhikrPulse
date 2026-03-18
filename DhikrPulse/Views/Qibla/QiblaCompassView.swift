@@ -39,7 +39,7 @@ struct QiblaCompassView: View {
                     compassContent
                 }
             }
-            .navigationTitle("Kıble")
+            .navigationTitle("tab_qibla")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(Color.themeBackground, for: .navigationBar)
@@ -68,11 +68,11 @@ struct QiblaCompassView: View {
                     .shadow(color: Color.themeAccent.opacity(0.3), radius: 10, x: 0, y: 5)
             }
             
-            Text("Kıbleyi Bulalım")
+            Text("qibla_find")
                 .font(.title2.weight(.bold))
                 .foregroundColor(.themePrimaryText)
             
-            Text("Kabe'nin yönünü hassas bir şekilde hesaplayabilmek için konumunuza ihtiyacımız var.")
+            Text("qibla_find_desc")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.themeSecondaryText)
@@ -81,7 +81,7 @@ struct QiblaCompassView: View {
             Button {
                 qiblaManager.requestPermission()
             } label: {
-                Text("Konum İzni Ver")
+                Text("qibla_grant_permission")
                     .font(.headline)
                     .foregroundColor(Color.themeBackground)
                     .frame(maxWidth: .infinity)
@@ -106,11 +106,11 @@ struct QiblaCompassView: View {
                     .shadow(color: Color.red.opacity(0.3), radius: 10, x: 0, y: 5)
             }
             
-            Text("Konum İzni Gerekli")
+            Text("qibla_permission_required")
                 .font(.title2.weight(.bold))
                 .foregroundColor(.themePrimaryText)
             
-            Text("Kıble özelliğini kullanabilmek için Ayarlar'dan uygulamanın konum erişimine izin vermelisiniz.")
+            Text("qibla_permission_desc")
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.themeSecondaryText)
@@ -121,7 +121,7 @@ struct QiblaCompassView: View {
                     UIApplication.shared.open(url)
                 }
             } label: {
-                Text("Ayarları Aç")
+                Text("qibla_open_settings")
                     .font(.headline)
                     .foregroundColor(.themePrimaryText)
                     .frame(maxWidth: .infinity)
@@ -161,7 +161,7 @@ struct QiblaCompassView: View {
                             }
                     }
                     
-                    Text("Kıble Yönündesiniz")
+                    Text("qibla_aligned")
                         .font(.title3.weight(.bold))
                         .foregroundColor(.themeAccent)
                         .padding(.top, 4)
@@ -176,7 +176,7 @@ struct QiblaCompassView: View {
                             .foregroundColor(.themeSecondaryText)
                     }
                     
-                    Text("Telefonunuzu Döndürün")
+                    Text("qibla_rotate_phone")
                         .font(.title3.weight(.medium))
                         .foregroundColor(.themeSecondaryText)
                         .padding(.top, 4)
@@ -185,7 +185,7 @@ struct QiblaCompassView: View {
                 // Derece Bilgileri
                 HStack(spacing: 40) {
                     VStack(spacing: 4) {
-                        Text("Kıble")
+                        Text("qibla_direction")
                             .font(.caption)
                             .foregroundColor(.themeSecondaryText)
                         Text("\(Int(qiblaManager.qiblaDirection))°")
@@ -198,7 +198,7 @@ struct QiblaCompassView: View {
                         .background(Color.themePrimaryText.opacity(0.2))
                     
                     VStack(spacing: 4) {
-                        Text("Yönünüz")
+                        Text("qibla_your_direction")
                             .font(.caption)
                             .foregroundColor(.themeSecondaryText)
                         Text("\(Int(qiblaManager.heading))°")

@@ -26,7 +26,7 @@ struct ProAnalyticsChartView: View {
     var body: some View {
         VStack(spacing: 20) {
             if activeDhikrs.isEmpty {
-                Text("Henüz istatistik üretecek kadar zikir kaydı yok.")
+                Text("stats_no_data")
                     .font(.subheadline)
                     .foregroundColor(.themeSecondaryText)
                     .multilineTextAlignment(.center)
@@ -51,7 +51,7 @@ struct ProAnalyticsChartView: View {
                         
                         // Center Info
                         VStack(spacing: 4) {
-                            Text("Toplam")
+                            Text("stats_total")
                                 .font(.caption2)
                                 .foregroundColor(.themeSecondaryText)
                             Text("\(totalCount)")
@@ -89,7 +89,7 @@ struct ProAnalyticsChartView: View {
                         }
                         
                         if activeDhikrs.count > 5 {
-                            Text("+ \(activeDhikrs.count - 5) daha")
+                            Text(String(format: "stats_plus_more", "\(activeDhikrs.count - 5)"))
                                 .font(.caption2)
                                 .foregroundColor(.themeSecondaryText)
                                 .padding(.leading, 18)

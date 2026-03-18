@@ -15,8 +15,8 @@ struct AppPreferencesSectionView: View {
             VStack(spacing: 0) {
                 PreferenceRow(
                     icon: "iphone.radiowaves.left.and.right",
-                    title: String(localized: "haptic_feedback"),
-                    subtitle: String(localized: "haptic_desc"),
+                    title: "haptic_feedback",
+                    subtitle: "haptic_desc",
                     isOn: $hapticEnabled
                 )
                 
@@ -26,8 +26,8 @@ struct AppPreferencesSectionView: View {
                 
                 PreferenceRow(
                     icon: "speaker.wave.2.fill",
-                    title: String(localized: "sound_effects"),
-                    subtitle: String(localized: "sound_desc"),
+                    title: "sound_effects",
+                    subtitle: "sound_desc",
                     isOn: $soundEnabled
                 )
                 

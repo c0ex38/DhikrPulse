@@ -5,7 +5,7 @@ struct AchievementSectionView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Başarımlarınız")
+            Text("stats_achievements")
                 .font(.headline)
                 .foregroundColor(.white)
             

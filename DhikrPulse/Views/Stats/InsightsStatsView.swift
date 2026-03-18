@@ -10,9 +10,9 @@ struct InsightsStatsView: View {
                 Color.themeBackground.ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    Picker("Görünüm Seç", selection: $selectedTab) {
-                        Text("Kişisel").tag(0)
-                        Text("Küresel").tag(1)
+                    Picker("tab_stats", selection: $selectedTab) {
+                        Text("stats_personal").tag(0)
+                        Text("stats_global").tag(1)
                     }
                     .pickerStyle(.segmented)
                     .padding()
@@ -61,7 +61,7 @@ struct InsightsStatsView: View {
                     }
                 }
             }
-            .navigationTitle("İstatistikler")
+            .navigationTitle("tab_stats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

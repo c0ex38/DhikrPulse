@@ -11,18 +11,18 @@ struct PremiumStoreView: View {
     
     // Tema verileri
     let themes = [
-        ("emerald", "Zümrüt (Klasik)", Color(red: 0.12, green: 0.84, blue: 0.45), true),
-        ("sapphire", "Safir Mavisi", Color(red: 0.12, green: 0.53, blue: 0.90), false),
-        ("ruby", "Yakut Kırmızısı", Color(red: 0.86, green: 0.15, blue: 0.27), false),
-        ("gold", "Çöl Altını", Color(red: 0.85, green: 0.65, blue: 0.13), false),
-        ("amethyst", "Ametist", Color(red: 0.61, green: 0.35, blue: 0.71), false)
+        ("emerald", "theme_emerald", Color(red: 0.12, green: 0.84, blue: 0.45), true),
+        ("sapphire", "theme_sapphire", Color(red: 0.12, green: 0.53, blue: 0.90), false),
+        ("ruby", "theme_ruby", Color(red: 0.86, green: 0.15, blue: 0.27), false),
+        ("gold", "theme_gold", Color(red: 0.85, green: 0.65, blue: 0.13), false),
+        ("amethyst", "theme_amethyst", Color(red: 0.61, green: 0.35, blue: 0.71), false)
     ]
     
     // Dokunma alanı verileri
     let touchpads = [
-        ("classic", "Klasik", "touchid", "Standart yeşil yüzey.", true),
-        ("wood", "Ahşap Doku", "leaf.fill", "Doğal ahşap hissi veren tasarım.", false),
-        ("water", "Su Damlası", "drop.fill", "Camgöbeği su efekti.", false)
+        ("classic", "pad_classic", "touchid", "pad_classic_desc", true),
+        ("wood", "pad_wood", "leaf.fill", "pad_wood_desc", false),
+        ("water", "pad_water", "drop.fill", "pad_water_desc", false)
     ]
     
     // Geri almak için orijinal seçimleri tutacak state'ler
@@ -81,11 +81,11 @@ struct PremiumStoreView: View {
                         // MARK: - Pro Avantajları
                         if !storeManager.isPro {
                             VStack(spacing: 12) {
-                                ProFeatureRow(icon: "nosign", title: String(localized: "no_ads"), desc: String(localized: "no_ads_desc"), color: .red)
-                                ProFeatureRow(icon: "infinity", title: String(localized: "unlimited_dhikr"), desc: String(localized: "unlimited_dhikr_desc"), color: .blue)
-                                ProFeatureRow(icon: "paintpalette.fill", title: String(localized: "special_themes"), desc: String(localized: "special_themes_desc"), color: .purple)
-                                ProFeatureRow(icon: "chart.bar.xaxis", title: String(localized: "advanced_stats"), desc: String(localized: "advanced_stats_desc"), color: .green)
-                                ProFeatureRow(icon: "rectangle.3.group", title: String(localized: "widgets"), desc: String(localized: "widgets_desc"), color: .orange)
+                                ProFeatureRow(icon: "nosign", title: "no_ads", desc: "no_ads_desc", color: .red)
+                                ProFeatureRow(icon: "infinity", title: "unlimited_dhikr", desc: "unlimited_dhikr_desc", color: .blue)
+                                ProFeatureRow(icon: "paintpalette.fill", title: "special_themes", desc: "special_themes_desc", color: .purple)
+                                ProFeatureRow(icon: "chart.bar.xaxis", title: "advanced_stats", desc: "advanced_stats_desc", color: .green)
+                                ProFeatureRow(icon: "rectangle.3.group", title: "widgets", desc: "widgets_desc", color: .orange)
                             }
                             .padding(.horizontal)
                         }

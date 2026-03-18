@@ -40,7 +40,7 @@ struct EsmaLibraryView: View {
             }
             .navigationTitle("esma_library_title")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: String(localized: "search_esma"))
+            .searchable(text: $searchText, prompt: "search_esma")
             .sheet(isPresented: $showingPremiumSheet) {
                 PremiumStoreView()
             }
@@ -67,7 +67,7 @@ struct EsmaCardView: View {
                         .font(.headline)
                         .foregroundColor(.themePrimaryText)
                     Spacer()
-                    Text("\(String(localized: "target")): \(esma.targetCount)")
+                    Text("\("target"): \(esma.targetCount)")
                         .font(.caption2)
                         .foregroundColor(.white)
                         .padding(.horizontal, 8)

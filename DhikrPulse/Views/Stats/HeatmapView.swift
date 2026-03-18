@@ -44,7 +44,7 @@ struct HeatmapView: View {
             
             // Legend
             HStack {
-                Text("Az")
+                Text("stats_little")
                     .font(.caption2)
                     .foregroundColor(.themeSecondaryText)
                 
@@ -55,7 +55,7 @@ struct HeatmapView: View {
                     RoundedRectangle(cornerRadius: 2).fill(Color.themeAccent.opacity(1.0)).frame(width: 12, height: 12)
                 }
                 
-                Text("Çok")
+                Text("stats_much")
                     .font(.caption2)
                     .foregroundColor(.themeSecondaryText)
             }

@@ -54,7 +54,7 @@ struct WeeklyActivityChartView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text("Haftalık Aktivite")
+                    Text("stats_weekly_activity")
                         .font(.headline)
                         .foregroundColor(.white)
                     Text(weeklyDateRange)
@@ -66,7 +66,7 @@ struct WeeklyActivityChartView: View {
                     Text("\(weeklyTotal)")
                         .font(.title3.bold())
                         .foregroundColor(.themeAccent)
-                    Text("TOPLAM ZİKİR")
+                    Text("stats_total_dhikr")
                         .font(.caption2.bold())
                         .foregroundColor(.themeSecondaryText)
                         .tracking(1)

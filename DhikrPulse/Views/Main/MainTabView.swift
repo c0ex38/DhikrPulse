@@ -96,7 +96,7 @@ struct MainTabView: View {
                 viewModel.errorMessage = nil
             }
         } message: {
-            Text(viewModel.errorMessage ?? String(localized: "unknown_error"))
+            Text(viewModel.errorMessage ?? "unknown_error")
         }
     }
     

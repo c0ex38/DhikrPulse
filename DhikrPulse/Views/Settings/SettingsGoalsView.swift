@@ -99,7 +99,7 @@ struct SettingsGoalsView: View {
             Text("DhikrPulse v1.0.0")
                 .font(.caption)
                 .foregroundColor(.themeSecondaryText)
-            Text("\"Kalbinizi ritimde tutun\"")
+            Text("\"\("splash_subtitle")\"")
                 .font(.caption.italic())
                 .foregroundColor(.themeAccent.opacity(0.7))
         }

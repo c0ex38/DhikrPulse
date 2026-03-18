@@ -1,0 +1,85 @@
+import SwiftUI
+
+struct AddDhikrView: View {
+    @EnvironmentObject private var viewModel: DhikrViewModel
+    @EnvironmentObject private var storeManager: StoreManager
+    @Environment(\.dismiss) private var dismiss
+    
+    @State private var showingPremiumStore = false
+    
+    @State private var title: String = ""
+    @State private var subtitle: String = ""
+    @State private var target: Int = 33
+    
+    let targetOptions = [33, 99, 100, 500, 1000]
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color.themeBackground.ignoresSafeArea()
+                
+                Form {
+                    Section(header: Text("Zikir Bilgileri").foregroundColor(.themeAccent)) {
+                        TextField("Zikir Adı (Örn: Sübhanallah)", text: $title)
+                        TextField("Anlamı / Alt Başlık (İsteğe bağlı)", text: $subtitle)
+                    }
+                    .listRowBackground(Color.themeCard)
+                    .foregroundColor(.white)
+                    
+                    Section(header: Text("Hedef").foregroundColor(.themeAccent)) {
+                        Picker("Hedef", selection: $target) {
+                            ForEach(targetOptions, id: \.self) { t in
+                                Text("\(t)").tag(t)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .colorScheme(.dark) // Harici segmented picker için koyu mod 
+                    }
+                    .listRowBackground(Color.themeCard)
+                }
+                .scrollContentBackground(.hidden) // Transparan Form arka planı için (iOS 16+)
+            }
+            .navigationTitle("Yeni Zikir Ekle")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(Color.themeBackground, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("İptal") {
+                        dismiss()
+                    }
+                    .foregroundColor(.themeSecondaryText)
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Kaydet") {
+                        saveDhikr()
+                    }
+                    .foregroundColor(.themeAccent)
+                    .disabled(title.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+            }
+        }
+        .colorScheme(.dark) // Bütün sayfa inputlarını gece moduna zorla
+        .sheet(isPresented: $showingPremiumStore) {
+            PremiumStoreView()
+                .environmentObject(storeManager)
+        }
+    }
+    
+    private func saveDhikr() {
+        if !storeManager.isPro && viewModel.dhikrs.count >= 3 {
+            showingPremiumStore = true
+            return
+        }
+        
+        viewModel.addDhikr(name: title, targetCount: target)
+        dismiss()
+    }
+}
+
+#Preview {
+    AddDhikrView()
+        .environmentObject(DhikrViewModel())
+        .environmentObject(StoreManager())
+}

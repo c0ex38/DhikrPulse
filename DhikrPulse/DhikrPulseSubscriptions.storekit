@@ -1,0 +1,53 @@
+{
+  "identifier" : "E2B8FF81",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_locale" : "tr_TR",
+    "_storefront" : "TUR"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "7AC23FF4",
+      "localizations" : [
+
+      ],
+      "name" : "DhikrPulse Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "AC9E8F3C",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Tüm premium temalar ve sayaçlar",
+              "displayName" : "DhikrPulse Pro - Aylık",
+              "locale" : "tr"
+            }
+          ],
+          "productID" : "cozay.DhikrPulse.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly Premium",
+          "subscriptionGroupID" : "7AC23FF4",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

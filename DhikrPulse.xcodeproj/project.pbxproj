@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AA000001000000000000AAAA /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AA000011000000000000AAAA /* FirebaseCore */; };
+		AA000002000000000000AAAA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AA000012000000000000AAAA /* FirebaseAuth */; };
+		AA000003000000000000AAAA /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = AA000013000000000000AAAA /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		50612CB02F696B4B00057316 /* DhikrPulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DhikrPulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +29,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA000001000000000000AAAA /* FirebaseCore in Frameworks */,
+				AA000002000000000000AAAA /* FirebaseAuth in Frameworks */,
+				AA000003000000000000AAAA /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +42,7 @@
 			isa = PBXGroup;
 			children = (
 				50612CB22F696B4B00057316 /* DhikrPulse */,
+				50612CFF2F69784600057316 /* Frameworks */,
 				50612CB12F696B4B00057316 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +53,13 @@
 				50612CB02F696B4B00057316 /* DhikrPulse.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		50612CFF2F69784600057316 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +82,9 @@
 			);
 			name = DhikrPulse;
 			packageProductDependencies = (
+				AA000011000000000000AAAA /* FirebaseCore */,
+				AA000012000000000000AAAA /* FirebaseAuth */,
+				AA000013000000000000AAAA /* FirebaseFirestore */,
 			);
 			productName = DhikrPulse;
 			productReference = 50612CB02F696B4B00057316 /* DhikrPulse.app */;
@@ -94,6 +114,9 @@
 			);
 			mainGroup = 50612CA72F696B4B00057316;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50612CB12F696B4B00057316 /* Products */;
 			projectDirPath = "";
@@ -332,6 +355,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA000011000000000000AAAA /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		AA000012000000000000AAAA /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AA000013000000000000AAAA /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50612CDC2F6976F300057316 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50612CA82F696B4B00057316 /* Project object */;
 }
